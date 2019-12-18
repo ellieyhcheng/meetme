@@ -1,0 +1,34 @@
+@import '../../constants/variables.scss';
+
+.date {
+    width: $box-side;
+    height: $box-side;
+    border: 1px solid white;
+    color: white;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: $box-margin;
+    font-size: 0.8em;
+    cursor: pointer;
+
+    &.today {
+        color: $pink;
+        border-color: $pink;
+    }
+
+    &.active {
+        color: black;
+        background: white;
+        // background: $pink;
+        // border-color: $pink;
+        font-weight: 600;
+    }
+
+    &.today {
+        color: $pink;
+        border-color: $pink;
+        font-weight: 800;
+    }
+}

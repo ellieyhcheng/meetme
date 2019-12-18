@@ -1,0 +1,48 @@
+@import '../../constants/variables.scss';
+
+.header {
+    height: 5%;
+    width: 100%;
+    color: white;
+    margin-bottom: 2vh;
+    
+    ul {
+        list-style-type: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        position: relative;
+
+        li {
+            margin: 0.6em;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            min-width: 140px;
+
+            transition: color linear 0.3s;
+
+            &:first-child.selected ~ .slider {
+                left: 0px;
+            }
+            &:nth-child(2).selected ~ .slider {
+                left: calc(1.2em + 140px);
+            }
+        }
+
+        .selected {
+            color: $pink;
+        }
+
+        .slider {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 139px;
+            height: 2px;
+            background: $pink;
+            transition: left 0.25s;
+            margin: 0 0.6em;
+        }
+    }
+}
