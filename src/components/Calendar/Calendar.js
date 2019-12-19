@@ -14,6 +14,9 @@ function Calendar() {
     const [monthLabels, setMonthLabels] = useState([]);
     const [yearLabels, setYearLabels] = useState([]);
     const [actives, setActives] = useState([]);
+    const [drag, setDrag] = useState(0); // 0 = false, 1 = add, 2 = remove
+    const [start, setStart] = useState({r: 0, c: 0});
+    const [tempActives, setTempActives] = useState([]);
 
     useEffect(() => {
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -107,24 +110,134 @@ function Calendar() {
         setUpdate(true);
     }
 
-    const activeCallback = (date) => {
-        // console.log("yoo")
-        let idx = actives.indexOf(date);
-        let newActive = actives;
+    const addActive = (date) => {
+        let idx = tempActives.indexOf(date);
+        let newActive = tempActives;
+
+        if (idx < 0) {
+            newActive.push(date);
+            setTempActives(newActive);
+        }
+    }
+
+    const removeActive = (date) => {
+        let idx = tempActives.indexOf(date);
+        let newActive = tempActives;
 
         if (idx >= 0) {
             newActive.splice(idx, 1);
-            setActives(newActive);
+            setTempActives(newActive);
         }
-        else {
-            newActive.push(date);
-            setActives(newActive);
-        }
-        setUpdate(true)
     }
 
-    const dragActives = (e) => {
-        console.log(e.target)
+    const startActive = (e) => {
+        if (e.target.classList.contains("date")) {
+            if (e.target.classList.contains("active")) {
+                setDrag(2); // erase mode
+                setTempActives(actives)
+                removeActive(e.target.dataset.date)
+            }
+            else {
+                setDrag(1); // mark mode
+                addActive(e.target.dataset.date)
+            }
+            const split = e.target.id.split('-');
+            const r = parseInt(split[1]);
+            const c = parseInt(split[2]);
+            
+            setStart({r, c});
+        }
+    }
+
+    const markActive = (e) => {
+        if (drag > 0 && e.target.classList.contains("date")) {
+            const split = e.target.id.split('-');
+            const row = parseInt(split[1]);
+            const col = parseInt(split[2]);
+
+            let top = start.r < row ? start.r : row;
+            let bottom = start.r >= row ? start.r : row;
+            let left = start.c < col ? start.c : col;
+            let right = start.c >= col ? start.c : col;
+
+            if (drag === 1) {
+                for (let r=top; r <= bottom; r++) {
+                    for (let c=left; c <= right; c++) {
+                        addActive(document.getElementById(`Date-${r}-${c}`).dataset.date)
+                    }
+                }
+            }
+            else {
+                for (let r=top; r <= bottom; r++) {
+                    for (let c=left; c <= right; c++) {
+                        removeActive(document.getElementById(`Date-${r}-${c}`).dataset.date)
+                    }
+                }
+            }
+
+            // top section
+            for (let r = 0; r < top; r++) {
+                for (let c = 0; c < 7; c++) {
+                    let date = document.getElementById(`Date-${r}-${c}`).dataset.date
+                    if (actives.includes(date)) {
+                        addActive(date)
+                    }
+                    else {
+                        removeActive(date)
+                    }
+                }
+            }
+            
+            // bottom section
+            for (let r = bottom + 1; r < rows.length; r++) {
+                for (let c = 0; c < 7; c++) {
+                    let date = document.getElementById(`Date-${r}-${c}`).dataset.date
+                    if (actives.includes(date)) {
+                        addActive(date)
+                    }
+                    else {
+                        removeActive(date)
+                    }
+                }
+            }
+
+            // left section
+            for (let r = 0; r < rows.length; r++) {
+                for (let c = 0; c < left; c++) {
+                    let date = document.getElementById(`Date-${r}-${c}`).dataset.date
+                    if (actives.includes(date)) {
+                        addActive(date)
+                    }
+                    else {
+                        removeActive(date)
+                    }
+                }
+            }
+            
+            // right section
+            for (let r = 0; r < rows.length; r++) {
+                for (let c = right + 1; c < 7; c++) {
+                    let date = document.getElementById(`Date-${r}-${c}`).dataset.date
+                    if (actives.includes(date)) {
+                        addActive(date)
+                    }
+                    else {
+                        removeActive(date)
+                    }
+                }
+            }
+        }
+        setUpdate(true)
+
+    }
+
+    const finishActive = (e) => {
+        setDrag(false);
+
+        let temp = [...actives, ...tempActives];
+            
+        setActives([...new Set(temp)]);
+        setTempActives([]);
     }
 
     return (
@@ -143,14 +256,14 @@ function Calendar() {
                 </div>
             </div>
 
-            <div className='grid' onMouseUp={dragActives}>
+            <div className='grid' onMouseUp={finishActive} onMouseDown={startActive} onMouseOver={markActive}>
                 {rows.map((row, i) => (
                     <div className="grid-row" key={i}>
                         <div className="label left">
                             {monthLabels[i]}
                         </div>
                         {row.map((date, j) => (
-                            <Date date={date} id={"Date-" + i + "-" + j} key={i*7 + j} onClick={activeCallback} active={actives.includes(date)} today={date === moment().format('YYYY-MM-D')}/>
+                            <Date date={date} id={"Date-" + i + "-" + j} key={i*7 + j} active={actives.includes(date) || tempActives.includes(date)} today={date === moment().format('YYYY-MM-D')}/>
                         ))}
                         <div className="label right">
                             {yearLabels[i]}
