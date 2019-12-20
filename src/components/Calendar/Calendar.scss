@@ -9,6 +9,41 @@
     align-items: center;
     width: max-content;
 
+    .legend {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9em;
+        margin-bottom: 1.5em;
+
+        .box {
+            width: calc(0.9 * #{$box-side});
+            // height: $box-side;
+            height: calc(0.9 * #{$box-side});
+            border-radius: 3px;
+            border: 1px solid white;
+            margin: 0 0.8em;
+        }
+
+        .selected {
+            display: flex;
+            align-items: center;
+            
+            .box {
+                background: white;
+            }
+        }
+
+        .not-selected {
+            display: flex;
+            align-items: center;
+
+            .box {
+                background: black;
+            }
+        }
+    }
+
     .days-of-the-week {
         display: flex;
         // margin-left: $month-width;

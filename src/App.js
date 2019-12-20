@@ -18,7 +18,8 @@ function App() {
 					</Route>
 					<Route path="/">
 						<p>yeet yote this is the default</p>
-						<Calendar/>
+						<Calendar type='week'/>
+						<Calendar />
 					</Route>
 				</Switch>
 

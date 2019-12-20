@@ -1,9 +1,11 @@
 import React from 'react';
 import './Date.scss';
 
-function Date({date, active, onClick, today, id}) {
+function Date({date, active, today, id}) {
+    // if (active)
+    //     console.log({date, active})
     return (
-        <div className={active ? "noselect date active": (today ? "noselect date today" : "noselect date")} 
+        <div className={active ? "date active": (today ? "date today" : "date")} 
             id={id}
             data-date={date}>
             {date.split('-')[2]}
