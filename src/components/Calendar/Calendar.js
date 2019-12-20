@@ -7,7 +7,7 @@ import solidArrow from '../../assets/triangle-filled.svg';
 
 const daysOfTheWeek = ['S', 'M', 'T', 'W', 'R', 'F', 'S'];
 
-function Calendar({type}) {
+function Calendar({type = 'date'}) {
     const [m, setM] = useState(moment());
     const [update, setUpdate] = useState(true);
     const [rows, setRows] = useState([]);
@@ -160,7 +160,7 @@ function Calendar({type}) {
             if (drag === 1) {
                 for (let r = 0; r < rows.length; r++) {
                     for (let c = 0; c < 7; c++) {
-                        let date = document.getElementById(`Date-${r}-${c}`).dataset.date
+                        let date = document.getElementById(`${type}-${r}-${c}`).dataset.date
                         let idx = temp.indexOf(date);
 
                         if (r >= top && r <= bottom && c <= right && c >= left) {
@@ -187,7 +187,7 @@ function Calendar({type}) {
             else {
                 for (let r = 0; r < rows.length; r++) {
                     for (let c = 0; c < 7; c++) {
-                        let date = document.getElementById(`Date-${r}-${c}`).dataset.date
+                        let date = document.getElementById(`${type}-${r}-${c}`).dataset.date
                         let idx = temp.indexOf(date);
 
                         if (r >= top && r <= bottom && c <= right && c >= left) {       
@@ -259,7 +259,7 @@ function Calendar({type}) {
                             {monthLabels[i]}
                         </div>
                         {row.map((date, j) => (
-                            <Date date={date} id={"Date-" + i + "-" + j} key={i*7 + j} active={actives.temp.includes(date)} today={date === moment().format('YYYY-MM-D')}/>
+                            <Date date={date} id={`${type}-${i}-${j}`} key={i*7 + j} active={actives.temp.includes(date)} today={date === moment().format('YYYY-MM-D')}/>
                         ))}
                         <div className="label right">
                             {yearLabels[i]}

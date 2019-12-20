@@ -2,8 +2,6 @@ import React from 'react';
 import './Date.scss';
 
 function Date({date, active, today, id}) {
-    // if (active)
-    //     console.log({date, active})
     return (
         <div className={active ? "date active": (today ? "date today" : "date")} 
             id={id}

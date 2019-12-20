@@ -63,9 +63,7 @@
 
     .grid {
         .grid-row {
-            display: flex;
-
-            
+            display: flex;         
         }
     }
 
@@ -85,7 +83,7 @@
         img {
             transform: rotate(90deg);
             cursor: pointer;
-            width: 22%;
+            width: 24%;
             margin: 3px 3px 0px; 
         }
     }
@@ -96,7 +94,7 @@
         img {
             transform: rotate(-90deg);
             cursor: pointer;
-            width: 22%;
+            width: 24%;
             margin: 3px 2px 0px; 
         }
     }
