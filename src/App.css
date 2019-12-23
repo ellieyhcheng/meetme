@@ -2,6 +2,7 @@
 	background: black;
 	min-height: 100vh;
 	width: 96vw;
+	min-width: max-content;
 	position: absolute;
 	top: 0;
 	left: 0;

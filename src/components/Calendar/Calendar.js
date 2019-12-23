@@ -15,7 +15,7 @@ function Calendar({type = 'date'}) {
     const [yearLabels, setYearLabels] = useState([]);
     const [actives, setActives] = useState({perm: [], temp: []});
     const [drag, setDrag] = useState(0); // 0 = false, 1 = add, 2 = remove
-    const [start, setStart] = useState({r: 0, c: 0});
+    const [start, setStart] = useState({r: 0, c: 0, x: 0, y: 0, width: 0});
 
     useEffect(() => {
         if (type === "week") {
@@ -135,7 +135,7 @@ function Calendar({type = 'date'}) {
             const r = parseInt(split[1]);
             const c = parseInt(split[2]);
             
-            setStart({r, c});
+            setStart({r, c, x:0, y:0, width: 0});
             setActives(actives => ({perm: actives.perm, temp: temp}))
             
            
@@ -147,7 +147,7 @@ function Calendar({type = 'date'}) {
 
     const markActive = (e) => {
         if (drag > 0 && e.target.classList.contains("date")) {
-            let temp =[...actives.temp];
+            let temp = [...actives.temp];
             const split = e.target.id.split('-');
             const row = parseInt(split[1]);
             const col = parseInt(split[2]);
@@ -221,7 +221,134 @@ function Calendar({type = 'date'}) {
 
         setActives(newActives => ({perm: newActives.temp, temp: newActives.temp}));
         document.removeEventListener('mouseup', finishActive)
-        // e.stopPropagation();
+    }
+
+    const touchStartActive = (e) => {
+        // setIsTouch(true);
+
+        if (e.target.classList.contains("date")) {
+            // console.log(e.target)
+
+            let temp = [...actives.perm];
+            let idx = temp.indexOf(e.target.dataset.date);
+
+            if (e.target.classList.contains("active")) {
+                setDrag(2); // erase mode
+                if (idx >= 0) {
+                    temp.splice(idx, 1);
+                }
+            }
+            else {
+                setDrag(1); // mark mode
+                if (idx < 0) {
+                    temp.push(e.target.dataset.date);
+                }
+            }
+            const split = e.target.id.split('-');
+            const r = parseInt(split[1]);
+            const c = parseInt(split[2]);
+
+            let style = e.target.currentStyle || window.getComputedStyle(e.target);
+            let width = parseInt(style.width) + parseInt(style.borderRightWidth) + parseInt(style.paddingRight) + parseInt(style.marginRight);
+            
+            setStart({r, c, x: e.targetTouches[0].pageX, y: e.targetTouches[0].pageY, width});
+            setActives(actives => ({perm: actives.perm, temp: temp}))
+        } else {
+            setActives(actives => ({perm: actives.perm, temp: [...actives.perm]}))
+        }
+        document.addEventListener('touchend', touchFinishActive)
+    }
+
+    const touchMarkActive = (e) => {
+        if (drag === 0) return;
+
+        let xPos = e.targetTouches[0].pageX;
+        let yPos = e.targetTouches[0].pageY;
+
+        let row = start.r + Math.floor((yPos - start.y) / start.width);
+        let col = start.c + Math.floor((xPos - start.x) / start.width);
+
+        if (yPos - start.y < 0 || xPos - start.x < 0) { // right to left or bottom to top
+            row = start.r + Math.ceil((yPos - start.y) / (start.width));
+            col = start.c + Math.ceil((xPos - start.x) / (start.width));
+        }
+
+        row = row < 0 ? 0 : row;
+        row = row > rows.length ? rows.length : row;
+
+        col = col < 0 ? 0 : col;
+        col = col > 6 ? 6 : col;
+        
+        let temp = [...actives.temp];
+
+        let top = start.r < row ? start.r : row;
+        let bottom = start.r >= row ? start.r : row;
+        let left = start.c < col ? start.c : col;
+        let right = start.c >= col ? start.c : col;
+
+        if (drag === 1) {
+            for (let r = 0; r < rows.length; r++) {
+                for (let c = 0; c < 7; c++) {
+                    let date = document.getElementById(`${type}-${r}-${c}`).dataset.date
+                    let idx = temp.indexOf(date);
+
+                    if (r >= top && r <= bottom && c <= right && c >= left) {
+                        if (idx < 0) {
+                            temp.push(date);
+                        }
+                    } else {
+                        let i = actives.perm.indexOf(date);
+                        if (i >= 0) {
+                            if (idx < 0) {
+                                temp.push(date);
+                            }
+                        }
+                        else {
+                            if (idx >= 0) {
+                                temp.splice(idx, 1);
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        else {
+            for (let r = 0; r < rows.length; r++) {
+                for (let c = 0; c < 7; c++) {
+                    let date = document.getElementById(`${type}-${r}-${c}`).dataset.date
+                    let idx = temp.indexOf(date);
+
+                    if (r >= top && r <= bottom && c <= right && c >= left) {       
+                        if (idx >= 0) {
+                            temp.splice(idx, 1);
+                        }
+                    }
+                    else {
+                        let i = actives.perm.indexOf(date);
+                        if (i >= 0) {
+                            if (idx < 0) {
+                                temp.push(date);
+                            }
+                        }
+                        else {
+                            if (idx >= 0) {
+                                temp.splice(idx, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        setActives(actives => ({perm: actives.perm, temp:temp}))
+    }
+
+    const touchFinishActive = (e) => {
+        setDrag(0);
+
+        setActives(newActives => ({perm: newActives.temp, temp: newActives.temp}));
+        document.removeEventListener('touchend', touchFinishActive)
+        e.preventDefault()
     }
 
     return (
@@ -239,7 +366,11 @@ function Calendar({type = 'date'}) {
             {type !== 'week' &&
                 <div className="days-of-the-week">
                     <div className="label left">
-                        <img src={arrow} alt="v" onClick={subtractMonth} onMouseOver={(e) => e.currentTarget.src=solidArrow} onMouseLeave={(e) => e.currentTarget.src=arrow}/>
+                        <img src={arrow} alt="v" onClick={subtractMonth}
+                        onMouseOver={(e) => e.currentTarget.src=solidArrow} 
+                        onMouseLeave={(e) => e.currentTarget.src=arrow}
+                        onTouchStart={(e) => {e.currentTarget.src=solidArrow; subtractMonth();}}
+                        onTouchEnd={(e) => {e.currentTarget.src=arrow; e.preventDefault()}}/>
                     </div>
                     {daysOfTheWeek.map((day, i) => (
                         <div className="day" key={i}>
@@ -247,19 +378,30 @@ function Calendar({type = 'date'}) {
                         </div>
                     ))}
                     <div className="label right">
-                        <img src={arrow} alt="v" onClick={addMonth} onMouseOver={(e) => e.currentTarget.src=solidArrow} onMouseLeave={(e) => e.currentTarget.src=arrow} />
+                        <img src={arrow} alt="v" 
+                        onClick={addMonth} 
+                        onMouseOver={(e) => e.currentTarget.src=solidArrow} 
+                        onMouseLeave={(e) => e.currentTarget.src=arrow} 
+                        onTouchStart={(e) => {e.currentTarget.src=solidArrow; addMonth();}}
+                        onTouchEnd={(e) => {e.currentTarget.src=arrow; e.preventDefault()}}/>
                     </div>
                 </div>
             }
 
-            <div className='grid' onMouseDown={startActive} onMouseOver={markActive}>
+            <div className='grid' 
+                onMouseDown={startActive} 
+                onMouseOver={markActive}
+                onTouchStart={touchStartActive}
+                onTouchMove={touchMarkActive}>
                 {rows.map((row, i) => (
                     <div className="grid-row" key={i}>
                         <div className="label left">
                             {monthLabels[i]}
                         </div>
                         {row.map((date, j) => (
-                            <Date date={date} id={`${type}-${i}-${j}`} key={i*7 + j} active={actives.temp.includes(date)} today={date === moment().format('YYYY-MM-D')}/>
+                            <Date date={date} id={`${type}-${i}-${j}`} key={i*7 + j} 
+                                active={actives.temp.includes(date)} 
+                                today={date === moment().format('YYYY-MM-D')}/>
                         ))}
                         <div className="label right">
                             {yearLabels[i]}
@@ -273,7 +415,9 @@ function Calendar({type = 'date'}) {
                     <div className="button" 
                         onClick={() => {setM(moment()); setUpdate(true);}}
                         onMouseOver={(e) => e.currentTarget.classList.add('active')} 
-                        onMouseLeave={(e) => e.currentTarget.classList.remove('active')}>
+                        onMouseLeave={(e) => e.currentTarget.classList.remove('active')}
+                        onTouchStart={(e) => {e.currentTarget.classList.add('active'); setM(moment()); setUpdate(true);}}
+                        onTouchEnd={(e) => {e.currentTarget.classList.remove('active'); e.preventDefault()}}>
                         Today
                     </div>
                 </div>
