@@ -1,8 +1,10 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import Header from './components/Header/Header';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Calendar from './components/Calendar/Calendar';
+// import Calendar from './components/Calendar/Calendar';
+// import Button from './components/Button/Button';
+import Create from './pages/Create/Create';
 
 function App() {
 
@@ -16,9 +18,7 @@ function App() {
 						<p>Find me a event pls</p>
 					</Route>
 					<Route path="/">
-						<p>yeet yote this is the default</p>
-						<Calendar type='week'/>
-						<Calendar />
+						<Create/>
 					</Route>
 				</Switch>
 

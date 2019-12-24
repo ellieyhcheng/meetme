@@ -3,7 +3,7 @@ import './Date.scss';
 
 function Date({date, active, today, id}) {
     return (
-        <div className={active ? "date active": (today ? "date today" : "date")} 
+        <div className={active ? (today ? "date today active" : "date active") : (today ? "date today" : "date")} 
             id={id}
             data-date={date}>
             {date.split('-')[2]}

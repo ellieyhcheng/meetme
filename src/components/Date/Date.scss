@@ -16,6 +16,7 @@
     &.today {
         color: $pink;
         border-color: $pink;
+        font-weight: 800;
     }
 
     &.active {
@@ -26,9 +27,11 @@
         font-weight: 600;
     }
 
-    &.today {
-        color: $pink;
-        border-color: $pink;
+    &.today.active {
+        color: black;
+        background: white;
+        // background: $pink;
+        border-color: white;
         font-weight: 800;
     }
 }

@@ -4,10 +4,11 @@ import moment from 'moment';
 import Date from '../Date/Date';
 import arrow from '../../assets/triangle.svg';
 import solidArrow from '../../assets/triangle-filled.svg';
+import Button from '../Button/Button';
 
 const daysOfTheWeek = ['S', 'M', 'T', 'W', 'R', 'F', 'S'];
 
-function Calendar({type = 'date'}) {
+function Calendar({type = 'date', getDates=() => {}}) {
     const [m, setM] = useState(moment());
     const [update, setUpdate] = useState(true);
     const [rows, setRows] = useState([]);
@@ -103,6 +104,14 @@ function Calendar({type = 'date'}) {
             setUpdate(false);
         }
     }, [m, update, type])
+
+    useEffect(() => {
+        getDates(actives.perm)
+    }, [actives, getDates])
+
+    useEffect(() => {
+        setActives({perm: [], temp: []})
+    }, [type])
 
     const addMonth = () => {
         setM(m => m.add(1, 'months'))
@@ -366,11 +375,13 @@ function Calendar({type = 'date'}) {
             {type !== 'week' &&
                 <div className="days-of-the-week">
                     <div className="label left">
-                        <img src={arrow} alt="v" onClick={subtractMonth}
-                        onMouseOver={(e) => e.currentTarget.src=solidArrow} 
-                        onMouseLeave={(e) => e.currentTarget.src=arrow}
-                        onTouchStart={(e) => {e.currentTarget.src=solidArrow; subtractMonth();}}
-                        onTouchEnd={(e) => {e.currentTarget.src=arrow; e.preventDefault()}}/>
+                        <button onClick={subtractMonth}>
+                            <img src={arrow} alt="v"
+                            onMouseOver={(e) => e.currentTarget.src=solidArrow} 
+                            onMouseLeave={(e) => e.currentTarget.src=arrow}
+                            onTouchStart={(e) => {e.currentTarget.src=solidArrow; subtractMonth();}}
+                            onTouchEnd={(e) => {e.currentTarget.src=arrow; e.preventDefault()}}/>
+                        </button>
                     </div>
                     {daysOfTheWeek.map((day, i) => (
                         <div className="day" key={i}>
@@ -378,12 +389,13 @@ function Calendar({type = 'date'}) {
                         </div>
                     ))}
                     <div className="label right">
-                        <img src={arrow} alt="v" 
-                        onClick={addMonth} 
-                        onMouseOver={(e) => e.currentTarget.src=solidArrow} 
-                        onMouseLeave={(e) => e.currentTarget.src=arrow} 
-                        onTouchStart={(e) => {e.currentTarget.src=solidArrow; addMonth();}}
-                        onTouchEnd={(e) => {e.currentTarget.src=arrow; e.preventDefault()}}/>
+                        <button onClick={addMonth}>
+                            <img src={arrow} alt="v"  
+                            onMouseOver={(e) => e.currentTarget.src=solidArrow} 
+                            onMouseLeave={(e) => e.currentTarget.src=arrow} 
+                            onTouchStart={(e) => {e.currentTarget.src=solidArrow; addMonth();}}
+                            onTouchEnd={(e) => {e.currentTarget.src=arrow; e.preventDefault()}}/>
+                        </button>
                     </div>
                 </div>
             }
@@ -412,14 +424,9 @@ function Calendar({type = 'date'}) {
 
             {type !== 'week' &&
                 <div className="today-button">
-                    <div className="button" 
-                        onClick={() => {setM(moment()); setUpdate(true);}}
-                        onMouseOver={(e) => e.currentTarget.classList.add('active')} 
-                        onMouseLeave={(e) => e.currentTarget.classList.remove('active')}
-                        onTouchStart={(e) => {e.currentTarget.classList.add('active'); setM(moment()); setUpdate(true);}}
-                        onTouchEnd={(e) => {e.currentTarget.classList.remove('active'); e.preventDefault()}}>
+                    <Button onClick={() => {setM(moment()); setUpdate(true);}}>
                         Today
-                    </div>
+                    </Button>
                 </div>
             }
             

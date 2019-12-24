@@ -1,7 +1,7 @@
 @import '../../constants/variables.scss';
 
 .calendar {
-    margin: 5vh 1vw;
+    margin: 3vh 1vw;
     letter-spacing: 0.1em;
     display: flex;
     flex-direction: column;
@@ -75,6 +75,20 @@
         padding: 0 5px;
         box-sizing: border-box;
         font-size: 0.9em;
+        background: black;
+        border: none;
+
+        button {
+            background: black;
+            border: 0;
+            width: max-content;
+            padding: 0px;
+
+            &:focus {
+                outline: white 1px dotted;
+            }
+        }
+        
     }
 
     .label.left {
@@ -83,7 +97,7 @@
         img {
             transform: rotate(90deg);
             cursor: pointer;
-            width: 24%;
+            width: $arrow-width;
             margin: 3px 3px 0px; 
         }
     }
@@ -94,7 +108,7 @@
         img {
             transform: rotate(-90deg);
             cursor: pointer;
-            width: 24%;
+            width: $arrow-width;
             margin: 3px 2px 0px; 
         }
     }

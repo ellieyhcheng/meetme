@@ -1,0 +1,18 @@
+
+.button {
+	border: white 1px solid;
+	width: max-content;
+	padding: 0.5em 1em;
+	border-radius: 0.3em;
+	cursor: pointer;
+	transition: linear 0.09s;
+	background: black;
+	color: white;
+	letter-spacing: 0.1em;
+	font-size: 0.9rem;
+}
+
+.button.active {
+	background: white;
+	color: black;
+}
