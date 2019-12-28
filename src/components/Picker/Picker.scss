@@ -1,0 +1,179 @@
+@import '../../constants/variables.scss';
+
+.picker {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .legend {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: 0.9em;
+        margin-bottom: 1.5em;
+        width: 250px;
+        position: relative;
+        letter-spacing: 0.1em;
+
+        .box {
+            border: 1px solid $grey;
+            border-radius: 3px;
+            flex-grow: 1;
+            height: $box-side;
+            width: $box-side;
+            margin: 0 0.8em;
+        }
+
+        .available {
+            display: flex;
+            align-items: center;
+            
+            .box {
+                background: $pink;
+            }
+        }
+
+        .unavailable {
+            display: flex;
+            align-items: center;
+
+            .box {
+                background: black;
+            }
+        }
+    }
+
+    .grid {
+        left: calc(-#{$cell-width} / 2);
+        position: relative;
+
+        .day-labels {
+            display: flex;
+
+            .day-label {
+                color: $grey;
+                width: $cell-width;
+                text-align: center;
+                padding: 0 0 0.3em 0;
+                font-size: 1.3em;
+
+                &:first-child {
+                    margin-right: 1em;
+                }
+            }
+        }
+    
+        .date-labels {
+            display: flex;
+    
+            .date-label {
+                color: $grey;
+                width: $cell-width;
+                text-align: center;
+                font-size: 0.85em;
+
+                &:first-child {
+                    margin-right: 1em;
+                }
+            }
+        }
+    
+        .table {
+            display: flex;
+            position: relative;
+    
+            .time-labels {
+                margin-right: 1em;
+                position: relative;
+                top: calc(-#{$cell-height} / 2);
+    
+                .time-label {
+                    font-size: 0.8em;
+                    letter-spacing: 0.1em;
+                    height: $cell-height;
+                    width: $cell-width;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-end;
+                    border: 1px solid black;
+                    border-bottom: 0px;
+                    opacity: 0;
+
+                    &:nth-child(4n+1) {
+                        opacity: 1;
+                    }
+                }
+            }
+    
+            .columns {
+                position: relative;
+                display: flex;
+                touch-action: none;
+        
+                .column {
+        
+                    .cell {
+                        width: $cell-width;
+                        height: $cell-height;
+                        border-top: 1px dotted $dark-grey;
+                        border-left: 1px solid $grey;
+                        background: black;
+        
+                        &.active {
+                            background: $pink;
+                        }
+        
+                        &:first-child {
+                            border-top: 1px solid $grey;
+                        }
+            
+                        &:last-child {
+                            border-bottom: 1px solid $grey;
+                        }
+        
+                        &:nth-child(4n+1) {
+                            border-top: 1px solid $grey;
+                        }
+                    }
+        
+                    &:first-child {
+        
+                        .cell {
+                            border-left: 1px solid $grey;
+        
+                            &:first-child {
+                                border-top-left-radius: 3px;
+                            }
+        
+                            &:last-child {
+                                border-bottom-left-radius:3px;
+                            }
+                        }
+                        
+                    }
+        
+                    &:last-child {
+                        .cell {
+                            border-right: 1px solid $grey;
+        
+                            &:first-child {
+                                border-top-right-radius: 3px;
+                            }
+        
+                            &:last-child {
+                                border-bottom-right-radius: 3px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    
+
+    
+}

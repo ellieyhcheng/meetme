@@ -112,5 +112,79 @@ input {
 	border: 1px solid white;
 	border-radius: 3px;
 	text-align: center;
-	padding: 0.5em 0.7em;
+	padding: 0.3em 0.7em;
 }
+
+.page {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	padding: 6vh 0;
+	position: relative;
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	margin: 0.5em 3vw 0.5em 0;
+
+	p {
+		font-size: 0.9rem;
+		margin: 0 2em;
+	}
+}
+
+.heading {
+	font-size: 1.2em;
+	margin: 0 0 1.5em 0;
+	align-self: center;
+	text-align: center;
+}
+
+.subheading {
+	margin: 0 0 1.5em 0;
+	font-size: 0.9em;
+	align-self: center;
+	color: $grey;
+}
+
+.title {
+	font-size: 1.8em;
+	margin: 0 0 0.5em 0;
+	text-align: center;
+}
+
+.error-screen {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	transition: linear 0.12s;
+
+	.error {
+		border: 1px $pink solid;
+		background: $pink;
+		color: black;
+		border-radius: 3px;
+		padding: 2em;
+		text-align: center;
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: flex-end;
+		z-index: 26;
+
+		p {
+			margin: 2em;
+			font-size: 1.1em;
+		}
+	}
+}
+
+::-moz-selection, ::selection {
+	color: black;
+	background: $pink;
+  }

@@ -65,13 +65,13 @@ function Create() {
             setError(error)
         }
         else {
-            console.log({ name, dates, times })
+            console.log({ name, type, dates, times })
             setError('')
         }
     }
 
     return (
-        <div className="create">
+        <div className="create page">
             <input
                 type="text"
                 className="event-name"
@@ -83,7 +83,7 @@ function Create() {
 
             <div className="form">
                 <div className="date-selection">
-                    <p>select {type === 'date' ? 'dates' : 'days'} that might work</p>
+                    <p className="heading">select {type === 'date' ? 'dates' : 'days'} that might work</p>
                     <div className="select-wrapper">
                         <select name="type" value={type} onChange={(e) => setType(e.currentTarget.value)}>
                             <option value="date">specific dates</option>
@@ -95,8 +95,8 @@ function Create() {
                 </div>
 
                 <div className="time-selection">
-                    <p>select time that might work</p>
-                    <div className="selection-item">
+                    <p className="heading">select time that might work</p>
+                    <div className="item">
                         <p>no earlier than: </p>
                         <div className="select-wrapper">
                             <select name="early" value={times.early} onChange={onChange}>
@@ -106,7 +106,7 @@ function Create() {
                             </select>
                         </div>
                     </div>
-                    <div className="selection-item">
+                    <div className="item">
                         <p>no later than: </p>
                         <div className="select-wrapper">
                             <select name="later" value={times.later} onChange={onChange}>
@@ -116,7 +116,7 @@ function Create() {
                             </select>
                         </div>
                     </div>
-                    <div className="selection-item">
+                    <div className="item">
                         <p>timezone: </p>
                         <div className="select-wrapper">
                             <select name="timezone" value={times.timezone} onChange={onChange}>

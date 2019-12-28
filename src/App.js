@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import Calendar from './components/Calendar/Calendar';
 // import Button from './components/Button/Button';
 import Create from './pages/Create/Create';
+import Event from './pages/Event/Event';
 
 function App() {
 
@@ -17,9 +18,14 @@ function App() {
 					<Route path="/find">
 						<p>Find me a event pls</p>
 					</Route>
+					{/* <Route path="/event/:id"> */}
 					<Route path="/">
-						<Create/>
+						<Event/>
+						{/* <Create/> */}
 					</Route>
+					{/* <Route path="/">
+						<Create/>
+					</Route> */}
 				</Switch>
 
 			</div>

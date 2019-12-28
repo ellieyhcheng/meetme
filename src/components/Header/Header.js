@@ -3,7 +3,7 @@ import './Header.scss';
 import { Link } from "react-router-dom";
 
 function Header() {
-    const [selected, setSelected] = useState('c');
+    const [selected, setSelected] = useState(window.location.pathname === '/find' ? 'f' : 'c');
     
     return (
         <div className="header">
