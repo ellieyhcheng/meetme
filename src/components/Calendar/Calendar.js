@@ -277,10 +277,11 @@ function Calendar({type = 'date', getDates=() => {}}) {
         let row = start.r + Math.floor((yPos - start.y) / start.width);
         let col = start.c + Math.floor((xPos - start.x) / start.width);
 
-        if (yPos - start.y < 0 || xPos - start.x < 0) { // right to left or bottom to top
+        if (yPos - start.y < 0) // right to left or bottom to top
             row = start.r + Math.ceil((yPos - start.y) / (start.width));
+
+        if (xPos - start.x < 0)
             col = start.c + Math.ceil((xPos - start.x) / (start.width));
-        }
 
         row = row < 0 ? 0 : row;
         row = row > rows.length ? rows.length : row;

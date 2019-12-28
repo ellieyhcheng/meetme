@@ -197,12 +197,13 @@ function Picker({event, user}) {
         let yPos = e.targetTouches[0].pageY;
 
         let row = start.r + Math.floor((yPos - start.y) / start.height);
-        let col = start.c + Math.ceil((xPos - start.x) / start.width);
+        let col = start.c + Math.floor((xPos - start.x + (start.x % start.width)) / start.width);
 
-        if (yPos - start.y < 0 || xPos - start.x < 0) { // right to left or bottom to top
-            row = start.r + Math.ceil((yPos - start.y) / (start.height));
-            col = start.c + Math.floor((xPos - start.x) / (start.width));
-        }
+        // right to left or bottom to top
+        if (yPos - start.y < 0)
+            row = start.r + Math.ceil((yPos - start.y) / start.height);
+        if (xPos - start.x < 0)
+            col = start.c - Math.floor((start.x - xPos + (Math.abs(start.width - start.x) % start.width)) / start.width);
 
         const rowsLength = columns[0].length
 
