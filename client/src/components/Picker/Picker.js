@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './Picker.scss';
 import moment from 'moment';
+import { withAPI } from '../API';
 
 function Picker({event, user, getAvailability=() => {}}) {
-
+    const uid = user.uid;
+    
     const availability = event.availability ? event.availability : {};
     const times = availability ? Object.keys(availability) : [];
     const avails = times.reduce((prev, time) => {
         var availables = availability[time];
-        if (availables.includes(user.uid)) {
+        if (availables.includes(uid)) {
             prev.push(time);
             return prev;
         }
         else return prev
     }, [])
+
     var columns = [];
     var days = [];
     var dates = [];
@@ -49,7 +52,7 @@ function Picker({event, user, getAvailability=() => {}}) {
 
     useEffect(() => {
         getAvailability(actives.perm)
-    }, [actives, getAvailability])
+    }, [actives.perm, getAvailability])
 
     const getHour = (time) => {
         let hour = moment.unix(time).format('h a')
@@ -356,4 +359,4 @@ function Picker({event, user, getAvailability=() => {}}) {
     );
 }
 
-export default Picker;
+export default withAPI(Picker);

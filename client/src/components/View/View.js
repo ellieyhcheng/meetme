@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './View.scss';
 import moment from 'moment';
 import { colorGradient } from "../../utils";
 
-function View({event}) {
-    const availability = event.availability ? event.availability : {};
-    const activeUsers = event.activeUsers ? event.activeUsers : [];
-    const times = availability ? Object.keys(availability) : [];
-    const avails = availability ? Object.values(availability) : [];
+function View({availability={}, numUsers=0}) {
+    const [avails, setAvails] = useState(Object.values(availability));
+    const times = Object.keys(availability);
     
     var columns = [];
     var days = [];
     var dates = [];
-    var colors = colorGradient('#FFDBDB', '#000000', activeUsers.length + 1)
+    var colors = colorGradient('#FFDBDB', '#000000', numUsers + 1)
 
     if (times.length !== 0) {
         let col = [];
@@ -46,19 +44,23 @@ function View({event}) {
         return hour;
     }
 
+    useEffect(() => {
+        setAvails(Object.values(availability))
+    }, [availability])
+
     return (
         <div className="view noselect">
             <p className="heading">everyone's availability</p>
 
             <div className="legend">
-                <p>0/{activeUsers.length} available</p>
+                <p>0/{numUsers} available</p>
                     
                 <div className="gradient">
-                    {[...activeUsers, 'empty'].map((user, i) => (
+                    {[...new Array(numUsers + 1)].map((user, i) => (
                         <div className="box" key={i} style={{background: colors[i]}}></div>
                     ))}
                 </div>
-                <p>{activeUsers.length}/{activeUsers.length} available</p>
+                <p>{numUsers}/{numUsers} available</p>
             </div>
 
             <div className="grid">
@@ -84,8 +86,7 @@ function View({event}) {
                         {columns.map((col, i) => (
                             <div className="column" key={i}>
                                 {col.map((slot, j) => (
-                                    <div className="cell" key={j} style={{background: colors[avails[j].length]}}>
-                                    </div>
+                                    <div className="cell" key={j} style={{background: colors[avails[j] ? avails[j].length : 0]}}/>
                                 ))}
                             </div>
                         ))}

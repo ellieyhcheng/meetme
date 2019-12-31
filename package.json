@@ -16,7 +16,8 @@
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "firebase-admin": "^8.5.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "socket.io": "^2.3.0"
   },
   "engines": {
     "node": "12.13.1",

@@ -11,7 +11,11 @@ class API {
     }
 
     processLogin(eventId, user) {
-        return this.perform('post', `/events/${eventId}`, user)
+        return this.perform('post', `/events/${eventId}/login`, user)
+    }
+
+    updateAvailability(availability, uid, eventId) {
+        return this.perform('post', `/events/${eventId}`, {availability, uid})
     }
 
     async perform (method, resource, data) {
