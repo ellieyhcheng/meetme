@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.env
+
+client/node_modules
+
+.vscode
+*firebase-adminsdk*
+
+populate.js

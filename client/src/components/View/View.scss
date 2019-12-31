@@ -84,6 +84,7 @@
                 margin-right: 1em;
                 position: relative;
                 top: calc(-#{$cell-height} / 2);
+                border: 1px solid black;
     
                 .time-label {
                     font-size: 0.8em;

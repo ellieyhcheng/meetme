@@ -4,42 +4,27 @@ import { withRouter } from "react-router-dom";
 import Picker from '../../components/Picker/Picker';
 import Button from '../../components/Button/Button';
 import View from '../../components/View/View';
+import { withAPI } from "../../components/API";
 
 // 57830400 Generic Monday 00:00 GMT, 57831300 Generic Monday 00:15 GMT
 
-const ev = {
-    eventName: 'Cyber Weekly Meeting',
-    times: [57891600, 57892500, 57893400, 57894300, 57895200, 57896100, 57897000, 57897900, 
-            58064400, 58065300, 58066200, 58067100, 58068000, 58068900, 58069800, 58070700 ],
-    // times: [ 1577926800, 1577927700, 1577928600, 1577929500, 1577930400, 1577931300, 1577932200, 1577933100 ],
-    
-    availability: [ // by slot, filled with people ids
-        [1], 
-        [2, 3, 1, 4], 
-        [3, 1, 4], 
-        [4, 3], 
-        [],
-        [],
-        [],
-        [],
-    ],
-    users: [1, 2, 3, 4, 5],
-    activeUsers: [1, 2, 3, 4],
-    names: {
-        1: 'Aaron',
-        2: 'Peter',
-        3: 'Sanjana',
-        4: 'Disha',
-        5: 'Test'
-    }
-}
-
-function Event({match, location}) {
-    // console.log(match.params.id)
-    const [user, setUser] = useState({username: '', password: ''})
+function Event({match, location, history, API}) {
+    const [user, setUser] = useState({username: '', password: '', uid: ''})
     const [error, setError] = useState('');
-    // const [logged, setLogged] = useState(false);
-    const [logged, setLogged] = useState(true);
+    const [logged, setLogged] = useState(false);
+    const [availability, setAvailability] = useState([]);
+    const [event, setEvent] = useState(null);
+
+    useEffect(() => {
+        const eventId = match.params.id;
+        API.getEvent(eventId)
+        .then(data => {
+            if (data)
+                setEvent(data);
+            else
+                history.replace('/')
+        })
+    }, [match, history, API])
 
     const onChange = (e) => {
         let input = e.currentTarget;
@@ -61,26 +46,37 @@ function Event({match, location}) {
             setError(error)
         }
         else {
-            console.log(user)
-            login(user.username, user.password)
-            setError('')
+            const eventId = match.params.id;
+
+            API.processLogin(eventId, {username: user.username, password: user.password})
+                .then(uid => {
+                    if (uid) {
+                        setUser(user => {
+                            return {
+                                ...user,
+                                uid
+                            }
+                        });
+                        setLogged(true);
+                        setError('')
+                    }
+                    else {
+                        setError('Wrong password')
+                        setLogged(false);
+                    }
+                })
         }
     }
 
-    const login = (username, password) => {
-        if (username === 'test' && password === '') setLogged(true);
-        else setLogged(false);
-    }
-
-
     return (
+        event ? (
         <div className="event page">
-            <p className="title">{ev.eventName}</p>
+            <p className="title">{event.eventName}</p>
             <p className="subheading">to invite people to fill out the form, send them this link: {window.location.host}{match.url}</p>
 
             <div className="form">
                 <div className="panel">
-                    {logged ? <Picker event={ev} user={user}/> : (
+                    {logged ? <Picker event={event} user={user} getAvailability={(availability) => setAvailability(availability)}/> : (
                         <div className="login">
                             <p className="heading">who are you?</p>
                             <p className="subheading">if new to this event, make up a password (if you'd like)</p>
@@ -117,7 +113,7 @@ function Event({match, location}) {
                 </div>
                 
                 <div className="panel">
-                    <View event={ev}/>
+                    <View event={event}/>
                 </div>
             </div>
             {error !== '' && 
@@ -129,7 +125,8 @@ function Event({match, location}) {
                 </div>
             }
         </div>
+        ) : <div className="event page"></div>
     );
 }
 
-export default withRouter(Event);
+export default withAPI(withRouter(Event));

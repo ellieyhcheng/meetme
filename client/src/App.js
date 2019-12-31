@@ -18,14 +18,14 @@ function App() {
 					<Route path="/find">
 						<p>Find me a event pls</p>
 					</Route>
-					{/* <Route path="/event/:id"> */}
-					<Route path="/">
+					<Route path="/:id">
+					{/* <Route path="/"> */}
 						<Event/>
 						{/* <Create/> */}
 					</Route>
-					{/* <Route path="/">
+					<Route path="/">
 						<Create/>
-					</Route> */}
+					</Route>
 				</Switch>
 
 			</div>

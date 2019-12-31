@@ -1,0 +1,121 @@
+@import '../../constants/variables.scss';
+
+.calendar {
+    margin: 3vh 1vw;
+    letter-spacing: 0.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+
+    .legend {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9em;
+        margin-bottom: 1.5em;
+
+        .box {
+            width: calc(0.9 * #{$box-side});
+            // height: $box-side;
+            height: calc(0.9 * #{$box-side});
+            border-radius: 3px;
+            border: 1px solid white;
+            margin: 0 0.8em;
+        }
+
+        .selected {
+            display: flex;
+            align-items: center;
+            
+            .box {
+                background: white;
+            }
+        }
+
+        .not-selected {
+            display: flex;
+            align-items: center;
+
+            .box {
+                background: black;
+            }
+        }
+    }
+
+    .days-of-the-week {
+        display: flex;
+        // margin-left: $month-width;
+
+        .day {
+            width: $box-side;
+            height: $box-side;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 3px $box-margin;
+            font-size: 1em;
+            border: 1px solid black;
+        }
+    }
+
+    .grid {
+        .grid-row {
+            display: flex;         
+        }
+    }
+
+    .label {
+        width: $month-width;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+        box-sizing: border-box;
+        font-size: 0.9em;
+        background: black;
+        border: none;
+
+        button {
+            background: black;
+            border: 0;
+            width: max-content;
+            padding: 0px;
+
+            &:focus {
+                outline: white 1px dotted;
+            }
+        }
+        
+    }
+
+    .label.left {
+        justify-content: flex-end;
+
+        img {
+            transform: rotate(90deg);
+            cursor: pointer;
+            width: $arrow-width;
+            margin: 3px 3px 0px; 
+        }
+    }
+
+    .label.right {
+        justify-content: flex-start;
+        
+        img {
+            transform: rotate(-90deg);
+            cursor: pointer;
+            width: $arrow-width;
+            margin: 3px 2px 0px; 
+        }
+    }
+
+    .today-button {
+        padding: 2vh 0;
+        font-size: 0.8em;
+    }
+
+}

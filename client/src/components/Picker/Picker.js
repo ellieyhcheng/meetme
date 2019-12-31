@@ -2,14 +2,23 @@ import React, { useState, useEffect } from 'react';
 import './Picker.scss';
 import moment from 'moment';
 
-function Picker({event, user}) {
+function Picker({event, user, getAvailability=() => {}}) {
 
-    const {times, availability, activeUsers} = event;
+    const availability = event.availability ? event.availability : {};
+    const times = availability ? Object.keys(availability) : [];
+    const avails = times.reduce((prev, time) => {
+        var availables = availability[time];
+        if (availables.includes(user.uid)) {
+            prev.push(time);
+            return prev;
+        }
+        else return prev
+    }, [])
     var columns = [];
     var days = [];
     var dates = [];
 
-    const [actives, setActives] = useState({perm: [], temp: []});
+    const [actives, setActives] = useState({perm: avails, temp: avails});
     const [drag, setDrag] = useState(0); // 0 = false, 1 = add, 2 = remove
     const [start, setStart] = useState({r: 0, c: 0, x: 0, y: 0, width: 0, height: 0});
 
@@ -37,6 +46,10 @@ function Picker({event, user}) {
         columns.push(col);
 
     }
+
+    useEffect(() => {
+        getAvailability(actives.perm)
+    }, [actives, getAvailability])
 
     const getHour = (time) => {
         let hour = moment.unix(time).format('h a')
@@ -329,7 +342,7 @@ function Picker({event, user}) {
                         {columns.map((col, i) => (
                             <div className="column" key={i}>
                                 {col.map((slot, j) => (
-                                    <div className={actives.temp.includes(slot.toString()) ? 'cell active' : 'cell'} 
+                                    <div className={actives.temp.includes(slot) ? 'cell active' : 'cell'} 
                                         id={`yourCell-${j}-${i}`} 
                                         data-time={slot} 
                                         key={j}/>

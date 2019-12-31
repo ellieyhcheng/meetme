@@ -1,0 +1,31 @@
+import axios from 'axios';
+
+const client = axios.create({
+    baseURL: '/',
+    withCredentials: true
+});
+
+class API {
+    getEvent(eventId) {
+        return this.perform('get', `/events/${eventId}`)
+    }
+
+    processLogin(eventId, user) {
+        return this.perform('post', `/events/${eventId}`, user)
+    }
+
+    async perform (method, resource, data) {
+        return client({
+            method,
+            url: resource,
+            data,
+        }).then(res => {
+            return res.data ? res.data : null;
+        }).catch(e => {
+            console.log(`${method} ${resource} caused:\n ${e}`);
+            return null
+        })
+    }
+}
+
+export default API;

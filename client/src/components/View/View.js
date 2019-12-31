@@ -4,8 +4,11 @@ import moment from 'moment';
 import { colorGradient } from "../../utils";
 
 function View({event}) {
-
-    const {times, availability, activeUsers} = event;
+    const availability = event.availability ? event.availability : {};
+    const activeUsers = event.activeUsers ? event.activeUsers : [];
+    const times = availability ? Object.keys(availability) : [];
+    const avails = availability ? Object.values(availability) : [];
+    
     var columns = [];
     var days = [];
     var dates = [];
@@ -81,7 +84,7 @@ function View({event}) {
                         {columns.map((col, i) => (
                             <div className="column" key={i}>
                                 {col.map((slot, j) => (
-                                    <div className="cell" key={j} style={{background: colors[availability[j].length]}}>
+                                    <div className="cell" key={j} style={{background: colors[avails[j].length]}}>
                                     </div>
                                 ))}
                             </div>
