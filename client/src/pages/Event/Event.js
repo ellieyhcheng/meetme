@@ -14,19 +14,18 @@ function Event({match, location, history, API}) {
     const [error, setError] = useState('');
     const [logged, setLogged] = useState(false);
     const [event, setEvent] = useState(null);
-    const [availability, setAvailability] = useState({});
     const [updateView, setUpdateView] = useState(false);
 
     const socket = useRef(null)
 
     useEffect(() => {
-        socket.current = io('http://localhost:3000')
+        socket.current = io()
 
         socket.current.emit('joinEvent', match.params.id);
 
         socket.current.on('update', (event) => {
             console.log(event)
-            setAvailability(event.availability)
+            setEvent(event);
             setUpdateView(old => !old)
         })
         
@@ -41,7 +40,6 @@ function Event({match, location, history, API}) {
         .then(data => {
             if (data) {
                 setEvent(data);
-                setAvailability(data.availability);
             }
             else
                 history.replace('/')
@@ -91,12 +89,15 @@ function Event({match, location, history, API}) {
     }
 
     const getAvailability = useCallback((actives) => {
-        setAvailability(availability => {
+        setEvent(event => {
+            const availability = event.availability;
+            const activeUsers = event.activeUsers;
+            var active = false;
             Object.keys(availability).forEach(time => {
                 const idx = availability[time].indexOf(user.uid);
                 if (idx !== -1) {
                     if (actives.includes(time)) {
-
+                        active = true;
                     } 
                     else {
                         availability[time].splice(idx, 1);
@@ -105,12 +106,31 @@ function Event({match, location, history, API}) {
                 else {
                     if (actives.includes(time)) {
                         availability[time].push(user.uid);
+                        active = true;
                     }
                 }
             })
+            
+            let idx = activeUsers.indexOf(user.uid)
+            if (active) {
+                // add this user to active user if not in there already
+                if (idx === -1) {
+                    activeUsers.push(user.uid);
+                }
+            }
+            else {
+                if (idx !== -1) {
+                    activeUsers.splice(idx, 1);
+                }
+            }
+
             socket.current.emit('user', availability, user.uid, match.params.id)
 
-            return availability;
+            return {
+                ...event,
+                availability,
+                activeUsers
+            };
         })
         setUpdateView(old => !old);
         
@@ -124,7 +144,7 @@ function Event({match, location, history, API}) {
 
             <div className="form">
                 <div className="panel">
-                    {logged ? <Picker event={event} user={user} getAvailability={getAvailability}/> : (
+                    {logged ? <Picker availability={event.availability} user={user} getAvailability={getAvailability}/> : (
                         <div className="login">
                             <p className="heading">who are you?</p>
                             <p className="subheading">if new to this event, make up a password (if you'd like)</p>
@@ -161,7 +181,7 @@ function Event({match, location, history, API}) {
                 </div>
                 
                 <div className="panel">
-                    <View availability={availability} numUsers={event.activeUsers ? event.activeUsers.length : 0} update={updateView}/>
+                    <View availability={event.availability} numUsers={event.activeUsers.length} update={updateView}/>
                 </div>
             </div>
             {error !== '' && 

@@ -408,17 +408,21 @@ function Calendar({type = 'date', getDates=() => {}}) {
                 onTouchMove={touchMarkActive}>
                 {rows.map((row, i) => (
                     <div className="grid-row" key={i}>
-                        <div className="label left">
-                            {monthLabels[i]}
-                        </div>
+                        {type !== 'week' && 
+                            <div className="label left">
+                                {monthLabels[i]}
+                            </div>
+                        }
                         {row.map((date, j) => (
                             <Date date={date} id={`${type}-${i}-${j}`} key={i*7 + j} 
                                 active={actives.temp.includes(date)} 
                                 today={date === moment().format('YYYY-MM-D')}/>
                         ))}
-                        <div className="label right">
-                            {yearLabels[i]}
-                        </div>
+                        {type !== 'week' &&
+                            <div className="label right">
+                                {yearLabels[i]}
+                            </div>
+                        }
                     </div>
                 ))}
             </div>

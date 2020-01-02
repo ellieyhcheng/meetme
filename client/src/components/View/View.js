@@ -10,6 +10,7 @@ function View({availability={}, numUsers=0}) {
     var columns = [];
     var days = [];
     var dates = [];
+    var hours = [];
     var colors = colorGradient('#FFDBDB', '#000000', numUsers + 1)
 
     if (times.length !== 0) {
@@ -35,6 +36,8 @@ function View({availability={}, numUsers=0}) {
         col.push(times[times.length - 1])
         columns.push(col);
 
+        const idx = times.length / columns.length;
+        hours = [...times.slice(0, idx), (parseInt(times[idx - 1]) + 900).toString()]
     }
 
     const getHour = (time) => {
@@ -78,7 +81,7 @@ function View({availability={}, numUsers=0}) {
                 </div>
                 <div className="table">
                     <div className="time-labels">
-                        {times.slice(0, times.length / columns.length).map((time, i) => (
+                        {hours.map((time, i) => (
                             <div className="time-label" key={i}>{getHour(time)}</div>
                         ))}
                     </div>

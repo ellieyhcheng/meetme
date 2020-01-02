@@ -11,4 +11,7 @@ router.post('/:id/login', controller.processLogin)
 // Update availability
 router.post('/:id', controller.updateAvailability)
 
+// Create event
+router.post('/', controller.createEvent)
+
 module.exports = router;

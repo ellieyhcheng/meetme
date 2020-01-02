@@ -1,7 +1,7 @@
 @import '../../constants/variables.scss';
 
 .create {
-    // min-height: 75vh;
+    min-height: 75vh;
     // position: relative;
 
     .event-name {
@@ -56,9 +56,6 @@
         .button {
             font-size: 1em;
         }
-    }
-
-
-    
+    }    
     
 }

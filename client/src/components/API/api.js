@@ -10,6 +10,10 @@ class API {
         return this.perform('get', `/events/${eventId}`)
     }
 
+    createEvent(eventName, availability) {
+        return this.perform('post', `/events`, {eventName, availability});
+    }
+
     processLogin(eventId, user) {
         return this.perform('post', `/events/${eventId}/login`, user)
     }

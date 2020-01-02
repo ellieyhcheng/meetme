@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Header.scss';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
-function Header() {
-    const [selected, setSelected] = useState(window.location.pathname === '/find' ? 'f' : 'c');
+function Header({location}) {
+    const [selected, setSelected] = useState(location.pathname === '/find' ? 'f' : (location.pathname === '/' ? 'c' : 'e'));
+
+    useEffect(() => {
+        setSelected(location.pathname === '/find' ? 'f' : (location.pathname === '/' ? 'c' : 'e'))
+    }, [location.pathname])
     
     return (
         <div className="header">
@@ -14,10 +18,12 @@ function Header() {
                 <li className={selected === 'f' ? 'selected': ''} onClick={() => setSelected('f')}>
                     <Link to="/find"><p>find event</p></Link>
                 </li>
-                <li className="slider"></li>
+                {selected !== 'e' &&
+                    <li className="slider"></li>
+                }
             </ul>
         </div>
     );
 }
 
-export default Header;
+export default withRouter(Header);

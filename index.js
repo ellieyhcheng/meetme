@@ -31,6 +31,7 @@ app.use(bodyParser.json());
 
 // Set up router endpoints
 const eventRouter = require('./routes/event');
+const eventController = require('./controller/event');
 app.use('/events', eventRouter);
 
 // Handle Errors
@@ -43,7 +44,6 @@ app.use(error());
 // });
 
 const io = require('socket.io')(server);
-const db = admin.firestore();
 
 io.on('connection', (socket) => {
 	console.log('a user connected')
@@ -53,46 +53,13 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('user', (availability, uid, eventId) => {
-		db.collection('events').doc(eventId).get()
-        .then(doc => {
-            if (!doc.exists) {
-                res.send(null);
-                return
-            }
-            const event = doc.data();
-            const times = Object.keys(availability) || [];
-
-            times.forEach(time => {
-                if (availability[time].includes(uid)) {
-                    if (event.availability[time].includes(uid)) {
-                        
-                    }
-                    else {
-                        event.availability[time].push(uid);
-                    }
-                }
-                else {
-                    const idx = event.availability[time].indexOf(uid);
-                    if (idx !== -1) {
-                        event.availability[time].splice(idx, 1);
-                    }
-                    else {
-                        
-                    }
-                }  
+        eventController.updateAvailabilityHelper(availability, uid, eventId)
+            .then((event) => {
+                if (event)
+                    socket.broadcast.to(eventId).emit('update', event)
+                else 
+                    console.log("Error writing document");
             })
-
-			db.collection("events").doc(eventId).update({availability: event.availability})
-				.then(() => {
-					socket.broadcast.to(eventId).emit('update', event)
-				})
-                .catch(err => {
-                    console.log("Error writing document: ", err);
-                });
-        })
-        .catch(err => {
-            console.log(err);
-		})
 		
 	})
 

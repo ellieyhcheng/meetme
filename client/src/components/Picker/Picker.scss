@@ -22,7 +22,7 @@
             border-radius: 3px;
             flex-grow: 1;
             height: $box-side;
-            width: $box-side;
+            width: $cell-width;
             margin: 0 0.8em;
         }
 
@@ -58,9 +58,11 @@
                 text-align: center;
                 padding: 0 0 0.3em 0;
                 font-size: 1.3em;
+                border: 1px solid black;
+                position: relative;
 
                 &:first-child {
-                    margin-right: 1em;
+                    margin-right: 1rem;
                 }
             }
         }
@@ -73,9 +75,11 @@
                 width: $cell-width;
                 text-align: center;
                 font-size: 0.85em;
+                border: 1px solid black;
+                position: relative;
 
                 &:first-child {
-                    margin-right: 1em;
+                    margin-right: 1rem;
                 }
             }
         }
@@ -85,7 +89,7 @@
             position: relative;
     
             .time-labels {
-                margin-right: 1em;
+                margin-right: 1rem;
                 position: relative;
                 top: calc(-#{$cell-height} / 2);
     

@@ -3,6 +3,8 @@ import './Create.scss';
 import Calendar from '../../components/Calendar/Calendar'
 import Button from '../../components/Button/Button'
 import moment from "moment-timezone";
+import { withAPI } from '../../components/API';
+import { withRouter } from 'react-router-dom';
 
 const timeRange = [
     { value: '0', text: 'midnight' },
@@ -32,7 +34,7 @@ const timeRange = [
     { value: '24', text: 'midnight' },
 ]
 
-function Create() {
+function Create({API, history}) {
     const [type, setType] = useState('date');
     const [dates, setDates] = useState([]);
     const [times, setTimes] = useState({ early: 9, later: 17, timezone: moment.tz.guess() });
@@ -65,7 +67,39 @@ function Create() {
             setError(error)
         }
         else {
-            console.log({ name, type, dates, times })
+            var availability = {}
+
+            if (type === 'week') {
+                dates.forEach(date => {
+                    const day = date.split('-')[1];
+                    for (let i = times.early; i < times.later; i++) {
+                        for (let j = 0; j < 60; j += 15) {
+                            const m = moment.tz(`1971-11-${day} ${i}:${j}:00`, 'YYYY-MM-D H:m:ss', times.timezone);
+                            availability[m.unix()] = []
+                        }
+                    }
+                })
+            }
+            else {
+                dates.forEach(date => {
+                    for (let i = times.early; i < times.later; i++) {
+                        for (let j = 0; j < 60; j += 15) {
+                            const m = moment.tz(`${date} ${i}:${j}:00`, 'YYYY-MM-D H:m:ss', times.timezone);
+                            availability[m.unix()] = []
+                        }
+                    }
+                })
+            }
+
+            API.createEvent(name, availability)
+                .then(eventId => {
+                    if (eventId)
+                        history.push(`/${eventId}`);
+                    else {
+                        setError('could not create event. network error')
+                    }
+                })
+            
             setError('')
         }
     }
@@ -146,5 +180,5 @@ function Create() {
     );
 }
 
-export default Create;
+export default withAPI( withRouter(Create));
 

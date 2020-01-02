@@ -3,10 +3,9 @@ import './Picker.scss';
 import moment from 'moment';
 import { withAPI } from '../API';
 
-function Picker({event, user, getAvailability=() => {}}) {
+function Picker({availability={}, user, getAvailability=() => {}}) {
     const uid = user.uid;
     
-    const availability = event.availability ? event.availability : {};
     const times = availability ? Object.keys(availability) : [];
     const avails = times.reduce((prev, time) => {
         var availables = availability[time];
@@ -20,6 +19,7 @@ function Picker({event, user, getAvailability=() => {}}) {
     var columns = [];
     var days = [];
     var dates = [];
+    var hours = [];
 
     const [actives, setActives] = useState({perm: avails, temp: avails});
     const [drag, setDrag] = useState(0); // 0 = false, 1 = add, 2 = remove
@@ -48,6 +48,8 @@ function Picker({event, user, getAvailability=() => {}}) {
         col.push(times[times.length - 1])
         columns.push(col);
 
+        const idx = times.length / columns.length;
+        hours = [...times.slice(0, idx), (parseInt(times[idx - 1]) + 900).toString()]
     }
 
     useEffect(() => {
@@ -332,7 +334,7 @@ function Picker({event, user, getAvailability=() => {}}) {
                 </div>
                 <div className="table">
                     <div className="time-labels">
-                        {times.slice(0, times.length / columns.length).map((time, i) => (
+                        {hours.map((time, i) => (
                             <div className="time-label" key={i}>{getHour(time)}</div>
                         ))}
                     </div>

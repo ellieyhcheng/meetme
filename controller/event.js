@@ -18,26 +18,30 @@ const getEvent = (req, res, next) => {
 
             const data = doc.data();
             
-            var users = data.users || {};
-            var usernames = Object.keys(users);
-            
-            var names = usernames.reduce((prev, username) => {
-                prev[users[username].id] = username;
-                return prev
-            }, {})
-            const event = {
-                eventName: data.eventName,
-                availability: data.availability,
-                activeUsers: data.activeUsers,
-                users: data.uids,
-                names: names,
-            }
-            res.json(event);
+            res.json(getEventHelper(data));
         })
         .catch(err => {
             console.log(err);
             res.send(null)
         })
+}
+
+const getEventHelper = (event) => {
+    var users = event.users || {};
+    var usernames = Object.keys(users);
+    
+    var names = usernames.reduce((prev, username) => {
+        prev[users[username].id] = username;
+        return prev
+    }, {})
+    const ev = {
+        eventName: event.eventName,
+        availability: event.availability,
+        activeUsers: event.activeUsers,
+        users: event.uids,
+        names: names,
+    }
+    return ev
 }
 
 // Process login
@@ -103,7 +107,14 @@ const updateAvailability = (req, res, next) => {
 
     const eventId = req.params.id;
 
-    db.collection('events').doc(eventId).get()
+    updateAvailabilityHelper(availability, uid, eventId)
+        .then((event) => {
+            res.send(event);
+        })
+}
+
+const updateAvailabilityHelper = (availability, uid, eventId) => {
+    return db.collection('events').doc(eventId).get()
         .then(doc => {
             if (!doc.exists) {
                 res.send(null);
@@ -111,11 +122,12 @@ const updateAvailability = (req, res, next) => {
             }
             const event = doc.data();
             const times = Object.keys(availability) || [];
+            var active = false;
 
             times.forEach(time => {
                 if (availability[time].includes(uid)) {
+                    active = true;
                     if (event.availability[time].includes(uid)) {
-                        
                     }
                     else {
                         event.availability[time].push(uid);
@@ -132,23 +144,58 @@ const updateAvailability = (req, res, next) => {
                 }  
             })
 
-            db.collection("events").doc(eventId).update({availability: event.availability})
+            let idx = event.activeUsers.indexOf(uid) 
+            if (active) {
+                // add this user to active user if not in there already
+                if (idx === -1) {
+                    event.activeUsers.push(uid);
+                }
+            }
+            else {
+                if (idx !== -1) {
+                    event.activeUsers.splice(idx, 1);
+                }
+            }
+
+            return db.collection("events").doc(eventId).update({availability: event.availability, activeUsers: event.activeUsers})
                 .then(() => {
-                    res.send(event.availability);
+                    return getEventHelper(event)
                 })
                 .catch(err => {
                     console.log("Error writing document: ", err);
-                    res.send(null);
                 });
         })
         .catch(err => {
             console.log(err);
-            res.send(null)
         })
+}
+
+const createEvent = (req, res, next) => {
+    const {eventName, availability} = req.body;
+
+    const event = {
+        eventName,
+        availability: availability,
+        activeUsers: [],
+        uids: [],
+        users: {},
+    }
+
+    db.collection('events').add(event)
+        .then(ref => {
+            console.log('Added document with ID: ', ref.id);
+            res.send(ref.id);
+        })
+        .catch (function(error) {
+            console.error("Error writing document: ", error);
+            res.send(null);
+        });
 }
 
 module.exports = {
     getEvent,
     processLogin,
-    updateAvailability
+    updateAvailability,
+    updateAvailabilityHelper,
+    createEvent
 };
