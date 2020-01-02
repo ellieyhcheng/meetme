@@ -15,9 +15,9 @@ function Header({location}) {
                 <li className={selected === 'c' ? 'selected': ''} onClick={() => setSelected('c')}>
                     <Link to="/"><p>create new event</p></Link>
                 </li>
-                <li className={selected === 'f' ? 'selected': ''} onClick={() => setSelected('f')}>
+                {/* <li className={selected === 'f' ? 'selected': ''} onClick={() => setSelected('f')}>
                     <Link to="/find"><p>find event</p></Link>
-                </li>
+                </li> */}
                 {selected !== 'e' &&
                     <li className="slider"></li>
                 }

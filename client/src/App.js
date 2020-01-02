@@ -13,9 +13,9 @@ function App() {
 				<Header />
 
 				<Switch>
-					<Route path="/find">
+					{/* <Route path="/find">
 						<p>Find me a event pls</p>
-					</Route>
+					</Route> */}
 					<Route path="/:id">
 						<Event/>
 					</Route>

@@ -42,7 +42,18 @@ function Event({match, location, history, API}) {
                 setEvent(data);
             }
             else
-                history.replace('/')
+                {
+                    let count = 3;
+                    setInterval(() => {
+                        if (count >= 0) {
+                            setError(`event now found... redirecting you in ${count}`)
+                            count--;
+                        }
+                    }, 1000)
+                    setTimeout(() => {
+                        history.replace('/')
+                    }, 4000)
+                }
         })
     }, [match, history, API])
 
@@ -193,7 +204,18 @@ function Event({match, location, history, API}) {
                 </div>
             }
         </div>
-        ) : <div className="event page"></div>
+        ) : (
+            <div className="event page">
+                    {error !== '' && 
+                        <div className="error-screen" onClick={() => setError('')}>
+                            <div className="error">
+                                <p>{error}</p>
+                                {/* <Button onClick={() => setError('')}>Ok</Button> */}
+                            </div>
+                        </div>
+                    }
+            </div>
+        )
     );
 }
 
