@@ -14,23 +14,20 @@
     cursor: pointer;
 
     &.today {
-        color: $pink;
-        border-color: $pink;
+        color: $dark-grey;
+        border-color: $dark-grey;
         font-weight: 800;
     }
 
     &.active {
         color: black;
         background: white;
-        // background: $pink;
-        // border-color: $pink;
         font-weight: 600;
     }
 
     &.today.active {
         color: black;
         background: white;
-        // background: $pink;
         border-color: white;
         font-weight: 800;
     }

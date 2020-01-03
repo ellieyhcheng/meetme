@@ -6,6 +6,7 @@ import Button from '../../components/Button/Button';
 import View from '../../components/View/View';
 import { withAPI } from "../../components/API";
 import io from 'socket.io-client';
+import moment from "moment-timezone";
 
 // 57830400 Generic Monday 00:00 GMT, 57831300 Generic Monday 00:15 GMT
 
@@ -15,8 +16,13 @@ function Event({match, location, history, API}) {
     const [logged, setLogged] = useState(false);
     const [event, setEvent] = useState(null);
     const [updateView, setUpdateView] = useState(false);
+    const [timezone, setTimezone] = useState(moment.tz.guess());
 
     const socket = useRef(null)
+
+    useEffect(() => {
+        document.title = (event ? event.eventName : '') + '- MeetMe';
+    }, [event])
 
     useEffect(() => {
         socket.current = io()
@@ -46,7 +52,7 @@ function Event({match, location, history, API}) {
                     let count = 3;
                     setInterval(() => {
                         if (count >= 0) {
-                            setError(`event now found... redirecting you in ${count}`)
+                            setError(`event not found... redirecting you in ${count}`)
                             count--;
                         }
                     }, 1000)
@@ -152,10 +158,24 @@ function Event({match, location, history, API}) {
         <div className="event page">
             <p className="title">{event.eventName}</p>
             <p className="subheading">to invite people to fill out the form, send them this link: {window.location.host}{match.url}</p>
-
+            {moment(Object.keys(event.availability)[0]).year() !== 1971 &&
+                <div className="timezone">
+                    <p>your time zone: </p>
+                    <div className="select-wrapper">
+                        <select name="type" value={timezone} onChange={(e) => setTimezone(e.currentTarget.value)}>
+                            {moment.tz.names().map((option, i) => (
+                                <option value={option} key={i}>{option}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            }
+            
             <div className="form">
                 <div className="panel">
-                    {logged ? <Picker availability={event.availability} user={user} getAvailability={getAvailability}/> : (
+                    {logged ? (
+                        <Picker availability={event.availability} user={user} getAvailability={getAvailability} timezone={timezone}/> 
+                    ) : (
                         <div className="login">
                             <p className="heading">who are you?</p>
                             <p className="subheading">if new to this event, make up a password (if you'd like)</p>
@@ -192,7 +212,7 @@ function Event({match, location, history, API}) {
                 </div>
                 
                 <div className="panel">
-                    <View availability={event.availability} numUsers={event.activeUsers.length} update={updateView}/>
+                    <View availability={event.availability} numUsers={event.activeUsers.length} update={updateView} timezone={timezone}/>
                 </div>
             </div>
             {error !== '' && 

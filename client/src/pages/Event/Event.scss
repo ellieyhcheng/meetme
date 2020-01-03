@@ -1,6 +1,21 @@
 @import '../../constants/variables.scss';
 
 .event {
+    padding-top: 3vh;
+
+    .timezone {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+        
+        .select-wrapper {
+            font-size: 0.9rem;
+        }
+
+        p {
+            margin: 0 1em;
+        }
+    }
 
     .form {
         display: flex;

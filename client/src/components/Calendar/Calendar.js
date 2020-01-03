@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.scss';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Date from '../Date/Date';
 import arrow from '../../assets/triangle.svg';
 import solidArrow from '../../assets/triangle-filled.svg';

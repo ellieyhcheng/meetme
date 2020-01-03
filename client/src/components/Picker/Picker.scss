@@ -24,6 +24,7 @@
             height: $box-side;
             width: $cell-width;
             margin: 0 0.8em;
+            box-sizing: border-box;
         }
 
         .available {
@@ -31,7 +32,7 @@
             align-items: center;
             
             .box {
-                background: $pink;
+                background: white;
             }
         }
 
@@ -126,7 +127,7 @@
                         background: black;
         
                         &.active {
-                            background: $pink;
+                            background: white;
                         }
         
                         &:first-child {

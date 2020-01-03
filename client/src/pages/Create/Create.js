@@ -34,7 +34,7 @@ const timeRange = [
     { value: '24', text: 'midnight' },
 ]
 
-function Create({API, history}) {
+function Create({ API, history }) {
     const [type, setType] = useState('date');
     const [dates, setDates] = useState([]);
     const [times, setTimes] = useState({ early: 9, later: 17, timezone: moment.tz.guess() });
@@ -71,7 +71,8 @@ function Create({API, history}) {
 
             if (type === 'week') {
                 dates.forEach(date => {
-                    const day = date.split('-')[1];
+                    var day = date.split('-')[1];
+                    if (day === '0') day = '7';
                     for (let i = times.early; i < times.later; i++) {
                         for (let j = 0; j < 60; j += 15) {
                             const m = moment.tz(`1971-11-${day} ${i}:${j}:00`, 'YYYY-MM-D H:m:ss', times.timezone);
@@ -99,7 +100,7 @@ function Create({API, history}) {
                         setError('could not create event. network error')
                     }
                 })
-            
+
             setError('')
         }
     }
@@ -118,6 +119,7 @@ function Create({API, history}) {
             <div className="form">
                 <div className="date-selection">
                     <p className="heading">select {type === 'date' ? 'dates' : 'days'} that might work</p>
+                    <p className="subheading">click and drag to choose possible {type === 'date' ? 'dates' : 'days'}</p>
                     <div className="select-wrapper">
                         <select name="type" value={type} onChange={(e) => setType(e.currentTarget.value)}>
                             <option value="date">specific dates</option>
@@ -130,45 +132,54 @@ function Create({API, history}) {
 
                 <div className="time-selection">
                     <p className="heading">select time that might work</p>
-                    <div className="item">
-                        <p>no earlier than: </p>
-                        <div className="select-wrapper">
-                            <select name="early" value={times.early} onChange={onChange}>
-                                {timeRange.map((option) => (
-                                    <option value={option.value} key={option.value}>{option.text}</option>
-                                ))}
-                            </select>
+                    <div className="selection-items">
+                        <div className="item">
+                            <p>no earlier than: </p>
+                            <div className="select-wrapper">
+                                <select name="early" value={times.early} onChange={onChange}>
+                                    {timeRange.map((option) => (
+                                        <option value={option.value} key={option.value}>{option.text}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div className="item">
-                        <p>no later than: </p>
-                        <div className="select-wrapper">
-                            <select name="later" value={times.later} onChange={onChange}>
-                                {timeRange.map((option) => (
-                                    <option value={option.value} key={option.value}>{option.text}</option>
-                                ))}
-                            </select>
+                        <div className="item">
+                            <p>no later than: </p>
+                            <div className="select-wrapper">
+                                <select name="later" value={times.later} onChange={onChange}>
+                                    {timeRange.map((option) => (
+                                        <option value={option.value} key={option.value}>{option.text}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
+                        {type !== 'week' &&
+                            <div className="item">
+                                <p>timezone: </p>
+                                <div className="select-wrapper">
+                                    <select name="timezone" value={times.timezone} onChange={onChange}>
+                                        {moment.tz.names().map((option, i) => (
+                                            <option value={option} key={i}>{option}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        }
                     </div>
-                    <div className="item">
-                        <p>timezone: </p>
-                        <div className="select-wrapper">
-                            <select name="timezone" value={times.timezone} onChange={onChange}>
-                                {moment.tz.names().map((option, i) => (
-                                    <option value={option} key={i}>{option}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
+                    {type === 'week' && 
+                            <div className="timezone-alt">
+                                <p >days of the week events assume participants are in the same timezone</p>
+                            </div>
+                        }
                 </div>
-            </div>
 
+            </div>
 
             <div className="create-button">
                 <Button onClick={onSubmit}>create event</Button>
             </div>
 
-            {error !== '' && 
+            {error !== '' &&
                 <div className="error-screen" onClick={() => setError('')}>
                     <div className="error">
                         <p>{error}</p>
@@ -180,5 +191,5 @@ function Create({API, history}) {
     );
 }
 
-export default withAPI( withRouter(Create));
+export default withAPI(withRouter(Create));
 

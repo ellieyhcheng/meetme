@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Picker.scss';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { withAPI } from '../API';
 
-function Picker({availability={}, user, getAvailability=() => {}}) {
+function Picker({availability={}, user, getAvailability=() => {}, timezone}) {
     const uid = user.uid;
     
     const times = availability ? Object.keys(availability) : [];
@@ -33,7 +33,7 @@ function Picker({availability={}, user, getAvailability=() => {}}) {
             if (times[i + 1] - times[i] !== 900) {
                 let m = moment.unix(times[i])
                 if (m.year() !== 1971) {
-                    dates.push(m.format('MMM D'))
+                    dates.push(m.tz(timezone).format('MMM D'))
                 }
                 days.push(m.format('dd')[0])
                 columns.push(col);
@@ -42,7 +42,7 @@ function Picker({availability={}, user, getAvailability=() => {}}) {
         }
         let m = moment.unix(times[times.length - 1])
         if (m.year() !== 1971) {
-            dates.push(m.format('MMM D'))
+            dates.push(m.tz(timezone).format('MMM D'))
         }
         days.push(m.format('dd')[0])
         col.push(times[times.length - 1])
@@ -57,7 +57,7 @@ function Picker({availability={}, user, getAvailability=() => {}}) {
     }, [actives.perm, getAvailability])
 
     const getHour = (time) => {
-        let hour = moment.unix(time).format('h a')
+        let hour = moment.unix(time).tz(timezone).format('h a')
         if (hour === '12 am') return 'midnight';
         if (hour === '12 pm') return 'noon';
         return hour;
