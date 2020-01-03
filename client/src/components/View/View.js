@@ -3,7 +3,7 @@ import './View.scss';
 import moment from 'moment-timezone';
 import { colorGradient } from "../../utils";
 
-function View({availability={}, numUsers=0, timezone}) {
+function View({availability={}, numUsers=0, timezone, showDetails, hideDetails}) {
     const [avails, setAvails] = useState(Object.values(availability));
     const times = Object.keys(availability);
     
@@ -90,7 +90,11 @@ function View({availability={}, numUsers=0, timezone}) {
                         {columns.map((col, i) => (
                             <div className="column" key={i}>
                                 {col.map((slot, j) => (
-                                    <div className="cell" key={j} style={{background: colors[avails[i*col.length + j] ? avails[i*col.length + j].length : 0]}}/>
+                                    <div className="cell" 
+                                        key={j} 
+                                        style={{background: colors[avails[i*col.length + j] ? avails[i*col.length + j].length : 0]}}
+                                        onMouseOver={() => showDetails(slot)}
+                                        onMouseLeave={hideDetails}/>
                                 ))}
                             </div>
                         ))}

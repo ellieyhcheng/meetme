@@ -7,6 +7,7 @@ import View from '../../components/View/View';
 import { withAPI } from "../../components/API";
 import io from 'socket.io-client';
 import moment from "moment-timezone";
+import Details from '../../components/Details/Details';
 
 // 57830400 Generic Monday 00:00 GMT, 57831300 Generic Monday 00:15 GMT
 
@@ -17,6 +18,7 @@ function Event({match, location, history, API}) {
     const [event, setEvent] = useState(null);
     const [updateView, setUpdateView] = useState(false);
     const [timezone, setTimezone] = useState(moment.tz.guess());
+    const [details, setDetails] = useState(null);
 
     const socket = useRef(null)
 
@@ -173,46 +175,56 @@ function Event({match, location, history, API}) {
             
             <div className="form">
                 <div className="panel">
-                    {logged ? (
-                        <Picker availability={event.availability} user={user} getAvailability={getAvailability} timezone={timezone}/> 
+                    {details ? (
+                        <Details event={event} time={details} timezone={timezone}/>
                     ) : (
-                        <div className="login">
-                            <p className="heading">who are you?</p>
-                            <p className="subheading">if new to this event, make up a password (if you'd like)</p>
-
-                            <div className="userform">
-                                <div className="item">
-                                    <p>name: </p>
-                                    <input
-                                        type="text"
-                                        className="username"
-                                        name="username"
-                                        required
-                                        onChange={(e) => onChange(e)}
-                                        value={user.username}
-                                    />
+                        logged ? (
+                            <Picker availability={event.availability} user={user} getAvailability={getAvailability} timezone={timezone}/> 
+                        ) : (
+                            <div className="login">
+                                <p className="heading">who are you?</p>
+                                <p className="subheading">if new to this event, make up a password (if you'd like)</p>
+    
+                                <div className="userform">
+                                    <div className="item">
+                                        <p>name: </p>
+                                        <input
+                                            type="text"
+                                            className="username"
+                                            name="username"
+                                            required
+                                            onChange={(e) => onChange(e)}
+                                            value={user.username}
+                                        />
+                                    </div>
+    
+                                    <div className="item">
+                                        <p>password (optional): </p>
+                                        <input
+                                            type="password"
+                                            className="password"
+                                            name="password"
+                                            onChange={onChange}
+                                            value={user.password}
+                                        />
+                                    </div>
                                 </div>
-
-                                <div className="item">
-                                    <p>password (optional): </p>
-                                    <input
-                                        type="password"
-                                        className="password"
-                                        name="password"
-                                        onChange={onChange}
-                                        value={user.password}
-                                    />
+                                <div className="submit-button">
+                                    <Button onClick={onSubmit}>Submit</Button>
                                 </div>
                             </div>
-                            <div className="submit-button">
-                                <Button onClick={onSubmit}>Submit</Button>
-                            </div>
-                        </div>
+                        )
                     )}
                 </div>
                 
                 <div className="panel">
-                    <View availability={event.availability} numUsers={event.activeUsers.length} update={updateView} timezone={timezone}/>
+                    <View 
+                        availability={event.availability} 
+                        numUsers={event.activeUsers.length} 
+                        update={updateView} 
+                        timezone={timezone}
+                        showDetails={(time) => setDetails(time)}
+                        hideDetails={() => setDetails(null)}/>
                 </div>
             </div>
             {error !== '' && 
@@ -230,7 +242,6 @@ function Event({match, location, history, API}) {
                         <div className="error-screen" onClick={() => setError('')}>
                             <div className="error">
                                 <p>{error}</p>
-                                {/* <Button onClick={() => setError('')}>Ok</Button> */}
                             </div>
                         </div>
                     }

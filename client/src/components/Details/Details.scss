@@ -1,0 +1,35 @@
+@import '../../constants/variables.scss';
+
+.details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .heading {
+        margin-bottom: 1em;
+    }
+
+    .listing {
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+        position: relative;
+
+        .listing-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .listing-title {
+                margin-bottom: 0.7em;
+                font-size: 0.95em;
+                padding-bottom: 0.4em;
+                border-bottom: 1px solid white;
+            }
+
+            p {
+                font-size: 0.9em;
+            }
+        }
+    }
+}
