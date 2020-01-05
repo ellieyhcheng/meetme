@@ -2,7 +2,8 @@
   "name": "meetme",
   "version": "1.0.0",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && yarn install --production=false && yarn build"
   },
   "keywords": [],
   "author": "",
