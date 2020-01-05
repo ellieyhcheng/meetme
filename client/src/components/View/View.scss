@@ -168,8 +168,13 @@
         }
 
     }
+}
 
-    
-
-    
+// Ipad
+@media only screen and (max-width: 1024px) {
+    .view {
+        .legend {
+            width: 300px;
+        }
+    }
 }

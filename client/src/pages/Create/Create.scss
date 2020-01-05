@@ -5,7 +5,7 @@
 
     .event-name {
         font-size: 1.2em;
-        width: 20vw;
+        width: 30vw;
     }
 
     .description {
@@ -81,4 +81,111 @@
         }
     }    
     
+}
+
+// Tablet
+@media only screen and (max-width: 800px)and (orientation : portrait) {
+    .create {
+        min-height: 55vh;
+
+        .event-name {
+            width: 40vw;
+        }
+
+        .form {
+            min-width: 98%;
+
+            .time-selection {
+                .selection-items {
+                    .item {
+                        .select-wrapper {
+                            width: 200px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Ipad
+@media only screen and (max-width: 768px) and (orientation : portrait) {
+    .create {
+        min-height: 65vh;
+
+        .event-name {
+            width: 40vw;
+        }
+
+        .form {
+            min-width: 98%;
+
+            .time-selection {
+                .selection-items {
+                    .item {
+                        .select-wrapper {
+                            width: 180px;
+                        }
+
+                        p {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Iphone 6/7/8 Plus 
+@media only screen and (max-width: 414px) and (orientation : portrait) {
+    .create {
+        min-height: initial;
+
+        .event-name {
+            width: 60vw;
+        }
+
+        .description {
+            width: 80%;
+            text-align: center;
+        }
+
+        .form {
+            min-width: 95%;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+
+            .date-selection {
+                width: 100%;
+                max-width: 100%;
+                position: relative;
+            }
+
+            .time-selection {
+                width: 100%;
+                max-width: 100%;
+                position: relative;
+
+                .selection-items {
+                    .item {
+                        .select-wrapper {
+                            width: 180px;
+                        }
+
+                        p {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+
+        .create-button {
+            position: relative;
+            bottom: 0;
+            margin-bottom: 5vh;
+        }
+    }
 }

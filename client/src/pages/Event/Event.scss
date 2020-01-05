@@ -63,3 +63,12 @@
 
     }
 }
+
+// Ipad
+@media only screen and (max-width: 1024px) {
+    .event {
+        .form {
+            min-width: 100%;
+        }
+    }
+}

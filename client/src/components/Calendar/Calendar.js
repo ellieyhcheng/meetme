@@ -233,10 +233,7 @@ function Calendar({type = 'date', getDates=() => {}}) {
     }
 
     const touchStartActive = (e) => {
-        // setIsTouch(true);
-
         if (e.target.classList.contains("date")) {
-            // console.log(e.target)
 
             let temp = [...actives.perm];
             let idx = temp.indexOf(e.target.dataset.date);
@@ -266,6 +263,7 @@ function Calendar({type = 'date', getDates=() => {}}) {
             setActives(actives => ({perm: actives.perm, temp: [...actives.perm]}))
         }
         document.addEventListener('touchend', touchFinishActive)
+        e.preventDefault();
     }
 
     const touchMarkActive = (e) => {
@@ -351,6 +349,7 @@ function Calendar({type = 'date', getDates=() => {}}) {
             }
         }
         setActives(actives => ({perm: actives.perm, temp:temp}))
+        e.preventDefault();
     }
 
     const touchFinishActive = (e) => {

@@ -187,4 +187,19 @@ input {
 ::-moz-selection, ::selection {
 	color: black;
 	background: $pink;
-  }
+}
+
+// Tablek
+@media only screen and (max-width: 1280px) {
+    .page {
+		padding: 2vh 0;
+	}
+}
+
+@media only screen and (max-width: 414px) and (orientation : portrait) {
+	.App {
+		width: 100%;
+		min-width: initial;
+		padding: 0;
+	}
+}
