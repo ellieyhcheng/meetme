@@ -115,15 +115,16 @@ function Create({ API, history }) {
                 onChange={(e) => setName(e.currentTarget.value)}
                 value={name}
             />
+            <p className="description">For a better experience, turn your device to landscape. Or not.</p>
 
             <div className="form">
                 <div className="date-selection">
-                    <p className="heading">select {type === 'date' ? 'dates' : 'days'} that might work</p>
-                    <p className="subheading">click and drag to choose possible {type === 'date' ? 'dates' : 'days'}</p>
+                    <p className="heading">Select {type === 'date' ? 'dates' : 'days'} that might work</p>
+                    <p className="subheading">Click and drag to choose possible {type === 'date' ? 'dates' : 'days'}</p>
                     <div className="select-wrapper">
                         <select name="type" value={type} onChange={(e) => setType(e.currentTarget.value)}>
-                            <option value="date">specific dates</option>
-                            <option value="week">days of the week</option>
+                            <option value="date">Specific Dates</option>
+                            <option value="week">Days of the Week</option>
                         </select>
                     </div>
 
@@ -131,10 +132,10 @@ function Create({ API, history }) {
                 </div>
 
                 <div className="time-selection">
-                    <p className="heading">select time that might work</p>
+                    <p className="heading">Select time that might work</p>
                     <div className="selection-items">
                         <div className="item">
-                            <p>no earlier than: </p>
+                            <p>No earlier than: </p>
                             <div className="select-wrapper">
                                 <select name="early" value={times.early} onChange={onChange}>
                                     {timeRange.map((option) => (
@@ -144,7 +145,7 @@ function Create({ API, history }) {
                             </div>
                         </div>
                         <div className="item">
-                            <p>no later than: </p>
+                            <p>No later than: </p>
                             <div className="select-wrapper">
                                 <select name="later" value={times.later} onChange={onChange}>
                                     {timeRange.map((option) => (
@@ -155,7 +156,7 @@ function Create({ API, history }) {
                         </div>
                         {type !== 'week' &&
                             <div className="item">
-                                <p>timezone: </p>
+                                <p>Timezone: </p>
                                 <div className="select-wrapper">
                                     <select name="timezone" value={times.timezone} onChange={onChange}>
                                         {moment.tz.names().map((option, i) => (
@@ -168,7 +169,7 @@ function Create({ API, history }) {
                     </div>
                     {type === 'week' && 
                             <div className="timezone-alt">
-                                <p >days of the week events assume participants are in the same timezone</p>
+                                <p>Days of the week events assume participants are in the same timezone</p>
                             </div>
                         }
                 </div>
@@ -176,7 +177,7 @@ function Create({ API, history }) {
             </div>
 
             <div className="create-button">
-                <Button onClick={onSubmit}>create event</Button>
+                <Button onClick={onSubmit}>Create Event</Button>
             </div>
 
             {error !== '' &&

@@ -13,7 +13,7 @@ function Header({location}) {
         <div className="header">
             <ul>
                 <li className={selected === 'c' ? 'selected': ''} onClick={() => setSelected('c')}>
-                    <Link to="/"><p>create new event</p></Link>
+                    <Link to="/"><p>Create New Event</p></Link>
                 </li>
                 {/* <li className={selected === 'f' ? 'selected': ''} onClick={() => setSelected('f')}>
                     <Link to="/find"><p>find event</p></Link>

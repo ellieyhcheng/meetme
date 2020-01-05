@@ -311,11 +311,11 @@ function Picker({availability={}, user, getAvailability=() => {}, timezone}) {
             <div className="legend">
                 <div className="available">
                     <div className="box"></div>
-                    available
+                    Available
                 </div>
                 <div className="unavailable">
                     <div className="box"></div>
-                    unavailable
+                    Unavailable
                 </div>
             </div>
 

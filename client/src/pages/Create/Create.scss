@@ -2,17 +2,20 @@
 
 .create {
     min-height: 75vh;
-    // position: relative;
 
     .event-name {
         font-size: 1.2em;
         width: 20vw;
-        // margin: 1vh 1vw;
+    }
+
+    .description {
+        margin: 2em 0 0;
+        color: $grey;
     }
 
     .form {
         display: flex;
-        margin: 8vh 0 5vh;
+        margin: 5vh 0 5vh;
         height: 100%;
         position: relative;
         width: 90%;

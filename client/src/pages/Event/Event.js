@@ -159,10 +159,10 @@ function Event({match, location, history, API}) {
         event ? (
         <div className="event page">
             <p className="title">{event.eventName}</p>
-            <p className="subheading">to invite people to fill out the form, send them this link: {window.location.host}{match.url}</p>
+            <p className="subheading">To invite people to fill out the form, send them this link: {window.location.host}{match.url}</p>
             {moment(Object.keys(event.availability)[0]).year() !== 1971 &&
                 <div className="timezone">
-                    <p>your time zone: </p>
+                    <p>Your timezone: </p>
                     <div className="select-wrapper">
                         <select name="type" value={timezone} onChange={(e) => setTimezone(e.currentTarget.value)}>
                             {moment.tz.names().map((option, i) => (
@@ -182,12 +182,12 @@ function Event({match, location, history, API}) {
                             <Picker availability={event.availability} user={user} getAvailability={getAvailability} timezone={timezone}/> 
                         ) : (
                             <div className="login">
-                                <p className="heading">who are you?</p>
-                                <p className="subheading">if new to this event, make up a password (if you'd like)</p>
+                                <p className="heading">Who are you?</p>
+                                <p className="subheading">If new to this event, make up a password (if you'd like)</p>
     
                                 <div className="userform">
                                     <div className="item">
-                                        <p>name: </p>
+                                        <p>Name: </p>
                                         <input
                                             type="text"
                                             className="username"
@@ -199,7 +199,7 @@ function Event({match, location, history, API}) {
                                     </div>
     
                                     <div className="item">
-                                        <p>password (optional): </p>
+                                        <p>Password (optional): </p>
                                         <input
                                             type="password"
                                             className="password"

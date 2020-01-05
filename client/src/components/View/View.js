@@ -54,7 +54,7 @@ function View({availability={}, numUsers=0, timezone, showDetails, hideDetails})
 
     return (
         <div className="view noselect">
-            <p className="heading">everyone's availability</p>
+            <p className="heading">Everyone's availability</p>
 
             <div className="legend">
                 <p>0/{numUsers} available</p>
