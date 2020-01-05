@@ -205,7 +205,6 @@ function Picker({availability={}, user, getAvailability=() => {}, timezone}) {
             setActives(actives => ({perm: actives.perm, temp: [...actives.perm]}))
         }
         document.addEventListener('touchend', touchFinishActive)
-        e.preventDefault()
     }
 
     const touchMarkActive = (e) => {
@@ -293,7 +292,6 @@ function Picker({availability={}, user, getAvailability=() => {}, timezone}) {
             }
         }
         setActives(actives => ({perm: actives.perm, temp:temp}))
-        e.preventDefault()
     }
 
     const touchFinishActive = (e) => {

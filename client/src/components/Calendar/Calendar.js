@@ -263,7 +263,6 @@ function Calendar({type = 'date', getDates=() => {}}) {
             setActives(actives => ({perm: actives.perm, temp: [...actives.perm]}))
         }
         document.addEventListener('touchend', touchFinishActive)
-        e.preventDefault();
     }
 
     const touchMarkActive = (e) => {
@@ -349,7 +348,6 @@ function Calendar({type = 'date', getDates=() => {}}) {
             }
         }
         setActives(actives => ({perm: actives.perm, temp:temp}))
-        e.preventDefault();
     }
 
     const touchFinishActive = (e) => {
