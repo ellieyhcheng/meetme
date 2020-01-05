@@ -32,7 +32,6 @@ function Event({match, location, history, API}) {
         socket.current.emit('joinEvent', match.params.id);
 
         socket.current.on('update', (event) => {
-            console.log(event)
             setEvent(event);
             setUpdateView(old => !old)
         })
@@ -160,7 +159,7 @@ function Event({match, location, history, API}) {
         <div className="event page">
             <p className="title">{event.eventName}</p>
             <p className="subheading">To invite people to fill out the form, send them this link: {window.location.host}{match.url}</p>
-            {moment(Object.keys(event.availability)[0]).year() !== 1971 &&
+            {moment.unix(Object.keys(event.availability)[0]).year() !== 1971 &&
                 <div className="timezone">
                     <p>Your timezone: </p>
                     <div className="select-wrapper">

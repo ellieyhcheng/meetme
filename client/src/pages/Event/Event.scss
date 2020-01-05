@@ -2,6 +2,7 @@
 
 .event {
     padding-top: 3vh;
+    text-align: center;
 
     .timezone {
         display: flex;
@@ -64,11 +65,47 @@
     }
 }
 
-// Ipad
-@media only screen and (max-width: 1024px) {
+// Tablet
+@media only screen and (max-width: 800px) and (orientation : portrait) {
     .event {
         .form {
             min-width: 100%;
+        }
+    }
+}
+
+// Ipad
+@media only screen and (max-width: 768px) and (orientation : portrait) {
+    .event {
+        .form {
+            min-width: 100%;
+            margin: 0;
+            flex-direction: column;
+            align-items: center;
+
+            .panel {
+                min-width: 100%;
+                max-width: 100%;
+                width: 100%;
+                margin: 4vh 0;
+
+                .login {
+                    margin: 0vh;
+                }
+            }
+        }
+    }
+}
+
+// Iphone 6/7/8 Plus 
+@media only screen and (max-width: 414px) and (orientation : portrait) {
+    .event {
+        .timezone {
+            justify-content: center;
+
+            .select-wrapper {
+                width: 50%;
+            }
         }
     }
 }

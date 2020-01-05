@@ -12,6 +12,7 @@
     margin: $box-margin;
     font-size: 0.8em;
     cursor: pointer;
+    touch-action: none;
 
     &.today {
         color: $dark-grey;
