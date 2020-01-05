@@ -11,10 +11,11 @@ const path = require('path');
 const config = require('./config');
 
 var admin = require("firebase-admin");
-var serviceAccount = require("./meetme-2b31e-firebase-adminsdk-cutce-5b9b0b8e78.json");
+
+const cert = JSON.parse(process.env.FIREBASE_CERT)
 
 admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
+	credential: admin.credential.cert(cert),
 	databaseURL: "https://meetme-2b31e.firebaseio.com"
 });
 
@@ -23,11 +24,6 @@ app.use(cors({
 	origin: true
 }));
 app.use(bodyParser.json());
-
-// Route site index at /
-// app.get('/', (req, res) => {
-// 	res.send('Connected!')
-// })
 
 // Set up router endpoints
 const eventRouter = require('./routes/event');
