@@ -67,10 +67,12 @@ function Create({ API, history }) {
         if (dates.length === 0) {
             error = 'Select at least one date or day'
         }
-        dates.forEach(date => {
-            if (moment(date, 'Y-MM-D').isBefore(moment(), 'day'))
-                error = 'Dates must be today or after'
-        })
+        if (type === 'date') {
+            dates.forEach(date => {
+                if (moment(date, 'Y-MM-D').isBefore(moment(), 'day'))
+                    error = 'Dates must be today or after'
+            })
+        }
 
         if (error !== '') {
             setError(error)
