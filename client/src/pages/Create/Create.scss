@@ -8,14 +8,9 @@
         width: 30vw;
     }
 
-    .description {
-        margin: 2em 0 0;
-        color: $grey;
-    }
-
     .form {
         display: flex;
-        margin: 5vh 0 5vh;
+        margin: 8vh 0 5vh;
         height: 100%;
         position: relative;
         width: 90%;
@@ -86,14 +81,20 @@
 // Tablet
 @media only screen and (max-width: 800px)and (orientation : portrait) {
     .create {
-        min-height: 55vh;
+        min-height: 52vh;
 
         .event-name {
             width: 40vw;
         }
 
+        .description {
+            margin: 2em 0 0;
+            color: $grey;
+        }
+
         .form {
             min-width: 98%;
+            margin: 4vh 0 4vh;
 
             .time-selection {
                 .selection-items {
@@ -111,7 +112,7 @@
 // Ipad
 @media only screen and (max-width: 768px) and (orientation : portrait) {
     .create {
-        min-height: 65vh;
+        min-height: 60vh;
 
         .event-name {
             width: 40vw;

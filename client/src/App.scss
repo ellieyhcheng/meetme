@@ -96,10 +96,6 @@ a:focus {
 		color: white;
 		pointer-events: none;
 	}
-
-	// &:hover:after {
-	// 	content: url('assets/triangle-filled.svg');
-	// }
 }
 
 input {
@@ -189,17 +185,63 @@ input {
 	background: $pink;
 }
 
-// Tablek
-@media only screen and (max-width: 1280px) {
+// Table5
+@media only screen and (max-width: 800px) and (orientation : portrait) {
     .page {
 		padding: 2vh 0;
+
+		.error-screen {
+			.error {
+				top: 25%;
+			}
+		}
 	}
 }
 
+//Ipad 
+@media only screen and (max-width: 768px) and (orientation : portrait) {
+	.page {
+		.error-screen {
+			.error {
+				top: 35%;
+			}
+		}
+	}
+}
+
+// Iphone 6/7/8 Plus
 @media only screen and (max-width: 414px) and (orientation : portrait) {
 	.App {
 		width: 100%;
 		min-width: initial;
 		padding: 0;
+	}
+
+	.page {
+		.error-screen {
+			.error {
+				top: 50%;
+				padding: 1.2em;
+
+				p {
+					margin: 1em;
+				}
+			}
+		}
+	}
+}
+
+// Galaxy S9/S9+
+@media only screen and (max-width: 360px) and (orientation : portrait) {
+	.page {
+		.error-screen {
+			.error {
+				padding: 1.2em;
+
+				p {
+					margin: 0.8em;
+				}
+			}
+		}
 	}
 }

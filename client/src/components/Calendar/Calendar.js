@@ -61,7 +61,7 @@ function Calendar({type = 'date', getDates=() => {}}) {
                             yearLabels.push(moment(m).year())
                         }
                         else {
-                            yearLabels.push(moment(m).year() + '/' + (moment(m).subtract(1, 'months').year()))
+                            yearLabels.push((moment(m).subtract(1, 'months').year()) + '/' + moment(m).year())
                         }
                         spillover = false;
                     }
@@ -119,7 +119,13 @@ function Calendar({type = 'date', getDates=() => {}}) {
     }
 
     const subtractMonth = () => {
-        setM(m => m.subtract(1, 'months'))
+        setM(m => {
+            const lastMonth = moment(m).subtract(1,'month')
+            if (lastMonth.isBefore(moment(), 'month'))
+                return m
+            else
+                return lastMonth
+        })
         setUpdate(true);
     }
 
@@ -360,16 +366,6 @@ function Calendar({type = 'date', getDates=() => {}}) {
 
     return (
         <div className="calendar noselect" >
-            <div className="legend">
-                <div className="selected">
-                    <div className="box"></div>
-                    Selected
-                </div>
-                <div className="not-selected">
-                    <div className="box"></div>
-                    Not Selected
-                </div>
-            </div>
             {type !== 'week' &&
                 <div className="days-of-the-week">
                     <div className="label left">

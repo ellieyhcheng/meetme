@@ -42,8 +42,6 @@ app.get("/*", (req, res) => {
 const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
-	console.log('a user connected')
-
 	socket.on('joinEvent', (room) => {
 		socket.join(room)
 	})
@@ -60,7 +58,6 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('disconnect', () => {
-		console.log('user disconnected')
 	})
 })
 

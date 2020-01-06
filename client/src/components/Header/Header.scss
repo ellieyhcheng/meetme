@@ -20,13 +20,24 @@
             position: relative;
             min-width: 140px;
 
-            transition: color linear 0.3s;
+            transition: color linear 0.2s;
 
             &:first-child.selected ~ .slider {
                 left: 0px;
+                visibility: visible;
+                opacity: 1;
             }
             &:nth-child(2).selected ~ .slider {
                 left: calc(1.2em + 140px);
+            }
+
+            &:hover {
+                color: white;
+            }
+            &:first-child:hover ~ .slider {
+                left: 0px;
+                visibility: visible;
+                opacity: 1;
             }
         }
 
@@ -41,8 +52,10 @@
             width: 139px;
             height: 2px;
             background: white;
-            transition: left 0.25s;
+            transition: left 0.25s, opacity 0.2s;
             margin: 0 0.6em;
+            visibility: hidden;
+            opacity: 0;
         }
     }
 }

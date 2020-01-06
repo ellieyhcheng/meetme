@@ -114,8 +114,27 @@
     }
 
     .today-button {
-        padding: 2vh 0;
+        padding: 4vh 0;
         font-size: 0.8em;
     }
 
+}
+
+// Tablet
+@media only screen and (max-width: 800px)and (orientation : portrait) {
+    .calendar {
+
+        .today-button {
+            padding: 2vh 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 414px)and (orientation : portrait) {
+    .calendar {
+
+        .today-button {
+            padding: 3vh 0;
+        }
+    }
 }

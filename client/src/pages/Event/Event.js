@@ -95,6 +95,19 @@ function Event({match, location, history, API}) {
                                 uid
                             }
                         });
+                        setEvent(event => {
+                            const users = event.users;
+                            const names = event.names;
+
+                            users.push(uid);
+                            names[uid] = user.username;
+
+                            return {
+                                ...event,
+                                users,
+                                names,
+                            }
+                        })
                         setLogged(true);
                         setError('')
                     }

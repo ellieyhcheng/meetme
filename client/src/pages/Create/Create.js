@@ -40,6 +40,11 @@ function Create({ API, history }) {
     const [times, setTimes] = useState({ early: 9, later: 17, timezone: moment.tz.guess() });
     const [name, setName] = useState('');
     const [error, setError] = useState('');
+    const [warning, setWarning] = useState(false);
+
+    useState(() => {
+        setWarning(window.innerWidth <= 800);
+    }, [window.innerWidth])
 
     const onChange = (e) => {
         setTimes(oldTimes => (
@@ -54,14 +59,18 @@ function Create({ API, history }) {
         let n = name.toLowerCase();
         let error = '';
         if (n === '') {
-            error = 'event name cannot be empty'
+            error = 'Event name cannot be empty'
         }
         if (n === 'event name') {
-            error = `event name cannot be ${name}`
+            error = `Event name cannot be ${name}`
         }
         if (dates.length === 0) {
-            error = 'select at least one date or day'
+            error = 'Select at least one date or day'
         }
+        dates.forEach(date => {
+            if (moment(date, 'Y-MM-D').isBefore(moment(), 'day'))
+                error = 'Dates must be today or after'
+        })
 
         if (error !== '') {
             setError(error)
@@ -115,7 +124,9 @@ function Create({ API, history }) {
                 onChange={(e) => setName(e.currentTarget.value)}
                 value={name}
             />
-            <p className="description">For a better experience, turn your device to landscape. Or not.</p>
+            {warning &&
+                <p className="description">For a better experience, turn your device to landscape. Or not.</p>
+            }
 
             <div className="form">
                 <div className="date-selection">
@@ -182,7 +193,7 @@ function Create({ API, history }) {
 
             {error !== '' &&
                 <div className="error-screen" onClick={() => setError('')}>
-                    <div className="error">
+                    <div className="error" onClick={e => e.stopPropagation()}>
                         <p>{error}</p>
                         <Button onClick={() => setError('')}>Ok</Button>
                     </div>
