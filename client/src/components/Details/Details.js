@@ -28,13 +28,13 @@ function Details({ event, time, timezone }) {
                 <div className="listing-item">
                     <p className="listing-title">Available</p>
                     {avails.map((uid, i) => (
-                        <p key={i}>{event.names[uid]}</p>
+                        <p key={i}>{event.names[uid] && event.names[uid].length > 10 ? event.names[uid].substring(0,15) + '...' : event.names[uid]}</p>
                     ))}
                 </div>
                 <div className="listing-item">
                     <p className="listing-title">Unavailable</p>
                     {notAvails.map((uid, i) => (
-                        <p key={i}>{event.names[uid]}</p>
+                        <p key={i}>{event.names[uid] && event.names[uid].length > 10 ? event.names[uid].substring(0,15) + '...' : event.names[uid]}</p>
                     ))}
                 </div>
             </div>
